@@ -1,5 +1,5 @@
 ﻿/*
- * By David Barrett, Microsoft Ltd. 2014. Use at your own risk.  No warranties are given.
+ * By David Barrett, Microsoft Ltd. 2014-2021. Use at your own risk.  No warranties are given.
  * 
  * DISCLAIMER:
  * THIS CODE IS SAMPLE CODE. THESE SAMPLES ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
@@ -12,23 +12,14 @@
  * */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Security;
 using System.Reflection;
-using System.Security.Principal;
-using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
-using System.Collections;
-using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 
