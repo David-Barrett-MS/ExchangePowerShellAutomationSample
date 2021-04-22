@@ -142,6 +142,7 @@
             // 
             // buttonClearCredentials
             // 
+            this.buttonClearCredentials.Enabled = false;
             this.buttonClearCredentials.Location = new System.Drawing.Point(228, 175);
             this.buttonClearCredentials.Name = "buttonClearCredentials";
             this.buttonClearCredentials.Size = new System.Drawing.Size(69, 23);
