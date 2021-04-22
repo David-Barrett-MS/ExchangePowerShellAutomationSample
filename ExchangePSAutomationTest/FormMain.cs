@@ -191,6 +191,10 @@ namespace ExchangePSAutomationTest
                 {
                     ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", Credential);
                 }
+                else if (radioButtonCertificateCredential.Checked)
+                {
+                    // Not implemented
+                }
                 else
                     ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", _authCertificate.Thumbprint);
 
@@ -259,6 +263,8 @@ namespace ExchangePSAutomationTest
                 _exchangeRunspace = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace();
 
                 PowerShell powershell = PowerShell.Create();
+
+                // Create New-PSSession command
                 PSCommand command = new PSCommand();
                 command.AddCommand("New-PSSession");
                 command.AddParameter("ConfigurationName", "Microsoft.Exchange");
@@ -271,16 +277,18 @@ namespace ExchangePSAutomationTest
                     command.AddParameter("AllowRedirection");
                 powershell.Commands = command;
 
+                // Open the local PowerShell runspace
                 _exchangeRunspace.Open();
                 powershell.Runspace = _exchangeRunspace;
 
+                // Run the New-PSSession command in the local PowerShell runspace
                 Collection<object> result = InvokeAndReport(powershell);
                 if (result.Count != 1)
                 {
                     _exchangeRunspace.Close();
                     throw new Exception("Unexpected number of Remote Runspace connections returned.");
                 }
-                // Set the runspace as a local variable on the runspace
+                // Set the remote Exchange runspace (returned by New-PSSession) as a local variable on the runspace
                 powershell = PowerShell.Create();
                 command = new PSCommand();
                 command.AddCommand("Set-Variable");
@@ -290,15 +298,7 @@ namespace ExchangePSAutomationTest
                 powershell.Runspace = _exchangeRunspace;
                 InvokeAndReport(powershell, true);
 
-                // We'll import the session too (so we can use it as we would a PowerShell command window)
-                command = new PSCommand();
-                command.AddCommand("Set-ExecutionPolicy");
-                command.AddParameter("Scope", "Process");
-                command.AddParameter("ExecutionPolicy", "Unrestricted");
-                powershell.Commands = command;
-                powershell.Runspace = _exchangeRunspace;
-                InvokeAndReport(powershell, true);
-
+                // Import the session into the local runspace (which then makes the Exchange cmdlets available directly in the local runspace)
                 command = new PSCommand();
                 command.AddCommand("Import-PSSession");
                 command.AddParameter("Session", result[0]);
