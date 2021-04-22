@@ -84,16 +84,9 @@ namespace ExchangePSAutomationTest
             CloseRunspace();
         }
 
-        private void radioButtonDefaultCredentials_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateAuthState();
-        }
-
-        private void radioButtonSpecificCredentials_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateAuthState();
-        }
-
+        /// <summary>
+        /// Uses Reflection to read the properties of the passed object and returns them as a string
+        /// </summary>
         private string GetObjectInfo(object Object)
         {
             // Use Reflection to read and show object properties
@@ -180,13 +173,13 @@ namespace ExchangePSAutomationTest
         /// <summary>
         /// Connect to remote runspace (for an Exchange runspace, this will be in No-Language mode, which will only allow Exchange cmdlets to run
         /// </summary>
-        private bool ConnectWithRemotePowerShell()
+        private bool ConnectToRemotePowerShell()
         {
             try
             {
-                PSCredential Credential = ExchangeCredentials();
+                // Set our ConnectionInfo for the Exchange remote session
                 WSManConnectionInfo ConnInfo = null;
-
+                PSCredential Credential = ExchangeCredentials();
                 if (radioButtonSpecificCredentials.Checked)
                 {
                     ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", Credential);
@@ -202,6 +195,8 @@ namespace ExchangePSAutomationTest
                 ConnInfo.MaximumConnectionRedirectionCount = 0;
                 if (checkBoxAllowRedirection.Checked)
                     ConnInfo.MaximumConnectionRedirectionCount = 10;
+
+                // Create the remote runspace
                 _verboseLog.Log("Creating and opening remote runspace");
                 _exchangeRunspace = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace(ConnInfo);
                 _exchangeRunspace.Open();
@@ -329,7 +324,7 @@ namespace ExchangePSAutomationTest
             {
                 return ConnectWithLocalPowerShell();
             }
-            return ConnectWithRemotePowerShell();
+            return ConnectToRemotePowerShell();
         }
 
         /// <summary>
@@ -338,7 +333,7 @@ namespace ExchangePSAutomationTest
         /// </summary>
         private bool IsValidPSUrl()
         {
-            if (textBoxExchangePSUrl.Text.Contains("<server>"))
+            if (textBoxExchangePSUrl.Text.Contains("<server>") || !textBoxExchangePSUrl.Text.ToLower().StartsWith("http"))
             {
                 System.Windows.Forms.MessageBox.Show("Please update the PowerShell Url", "Invalid Configuration", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBoxExchangePSUrl.Focus();
@@ -362,24 +357,6 @@ namespace ExchangePSAutomationTest
             return true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (!IsValidPSUrl())
-                return;
-            if (!HaveScript())
-                return;
-            button1.Enabled = false;
-            Cursor cursor = this.Cursor;
-            this.Cursor = Cursors.WaitCursor;
-
-            if (ConnectExchangeRunspace())
-            {
-                ProcessScript();
-            }
-
-            this.Cursor = cursor;
-            button1.Enabled = true;
-        }
 
         /// <summary>
         /// Process the PowerShell
@@ -397,6 +374,8 @@ namespace ExchangePSAutomationTest
 
                 if (checkBoxProcessAsCommand.Checked)
                 {
+                    // If we connect directly to the Exchange remote runspace, we can't run a script.  Each command (which
+                    // must be an Exchange cmdlet) must be added individually.
                     for (int i = 0; i < textBoxPowerShell.Lines.Count<string>(); i++)
                     {
                         powershell.Commands = ParseCommand(textBoxPowerShell.Lines[i]);
@@ -405,6 +384,8 @@ namespace ExchangePSAutomationTest
                 }
                 else
                 {
+                    // This method will only work when we import the remote Exchange runspace into the local runspace.
+                    // In this case, FullLanguage is available in the local session, and only Exchange cmdlets are sent to the remote.
                     PSCommand command = new PSCommand();
                     command.AddScript(textBoxPowerShell.Text);
                     powershell.Commands = command;
@@ -419,6 +400,7 @@ namespace ExchangePSAutomationTest
 
         /// <summary>
         /// Parse a PowerShell text string into a PSCommand with parameters
+        /// This is a very basic parser and won't work with complex cmdlet calls
         /// </summary>
         /// <param name="commandLine">The PowerShell code</param>
         private PSCommand ParseCommand(string commandLine)
@@ -482,6 +464,37 @@ namespace ExchangePSAutomationTest
             _exchangeRunspace = null;
         }
 
+        #region UIEvents
+
+        private void radioButtonDefaultCredentials_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAuthState();
+        }
+
+        private void radioButtonSpecificCredentials_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAuthState();
+        }
+
+        private void buttonRunPowerShell_Click(object sender, EventArgs e)
+        {
+            if (!IsValidPSUrl())
+                return;
+            if (!HaveScript())
+                return;
+            buttonRunPowerShell.Enabled = false;
+            Cursor cursor = this.Cursor;
+            this.Cursor = Cursors.WaitCursor;
+
+            if (ConnectExchangeRunspace())
+            {
+                ProcessScript();
+            }
+
+            this.Cursor = cursor;
+            buttonRunPowerShell.Enabled = true;
+        }
+
         private void radioButtonUseLocalPowerShell_CheckedChanged(object sender, EventArgs e)
         {
             CloseRunspace();
@@ -492,7 +505,7 @@ namespace ExchangePSAutomationTest
             CloseRunspace();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseRunspace();
         }
@@ -540,5 +553,6 @@ namespace ExchangePSAutomationTest
             textBoxExchangePSUrl.Text = "https://outlook.office365.com/powershell-liveid/";
             comboBoxAuthMethod.SelectedIndex = 1; // Basic auth
         }
+        #endregion
     }
 }

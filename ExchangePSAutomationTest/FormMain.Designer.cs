@@ -30,7 +30,7 @@
         {
             this.textBoxPowerShell = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonRunPowerShell = new System.Windows.Forms.Button();
             this.checkBoxProcessAsCommand = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonClearCredentials = new System.Windows.Forms.Button();
@@ -58,6 +58,7 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelUsername = new System.Windows.Forms.Label();
             this.tabPagePowerShell = new System.Windows.Forms.TabPage();
+            this.buttonOffice365PowerShell = new System.Windows.Forms.Button();
             this.checkBoxIgnoreSSLErrors = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowRedirection = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -66,7 +67,6 @@
             this.textBoxExchangePSUrl = new System.Windows.Forms.TextBox();
             this.radioButtonUseRemotePowerShell = new System.Windows.Forms.RadioButton();
             this.radioButtonUseLocalPowerShell = new System.Windows.Forms.RadioButton();
-            this.buttonOffice365PowerShell = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -94,7 +94,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.buttonRunPowerShell);
             this.groupBox2.Controls.Add(this.checkBoxProcessAsCommand);
             this.groupBox2.Controls.Add(this.textBoxPowerShell);
             this.groupBox2.Location = new System.Drawing.Point(12, 105);
@@ -104,22 +104,22 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "PowerShell Script";
             // 
-            // button1
+            // buttonRunPowerShell
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(425, 175);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(119, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Run Script!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonRunPowerShell.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRunPowerShell.Location = new System.Drawing.Point(370, 175);
+            this.buttonRunPowerShell.Name = "buttonRunPowerShell";
+            this.buttonRunPowerShell.Size = new System.Drawing.Size(174, 23);
+            this.buttonRunPowerShell.TabIndex = 7;
+            this.buttonRunPowerShell.Text = "Connect and run PowerShell";
+            this.buttonRunPowerShell.UseVisualStyleBackColor = true;
+            this.buttonRunPowerShell.Click += new System.EventHandler(this.buttonRunPowerShell_Click);
             // 
             // checkBoxProcessAsCommand
             // 
             this.checkBoxProcessAsCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxProcessAsCommand.AutoSize = true;
-            this.checkBoxProcessAsCommand.Location = new System.Drawing.Point(58, 179);
+            this.checkBoxProcessAsCommand.Location = new System.Drawing.Point(3, 179);
             this.checkBoxProcessAsCommand.Name = "checkBoxProcessAsCommand";
             this.checkBoxProcessAsCommand.Size = new System.Drawing.Size(217, 17);
             this.checkBoxProcessAsCommand.TabIndex = 5;
@@ -329,6 +329,7 @@
             // radioButtonCertificateCredential
             // 
             this.radioButtonCertificateCredential.AutoSize = true;
+            this.radioButtonCertificateCredential.Enabled = false;
             this.radioButtonCertificateCredential.Location = new System.Drawing.Point(345, 6);
             this.radioButtonCertificateCredential.Name = "radioButtonCertificateCredential";
             this.radioButtonCertificateCredential.Size = new System.Drawing.Size(163, 17);
@@ -414,6 +415,16 @@
             this.tabPagePowerShell.TabIndex = 1;
             this.tabPagePowerShell.Text = "PowerShell Options";
             this.tabPagePowerShell.UseVisualStyleBackColor = true;
+            // 
+            // buttonOffice365PowerShell
+            // 
+            this.buttonOffice365PowerShell.Location = new System.Drawing.Point(478, 5);
+            this.buttonOffice365PowerShell.Name = "buttonOffice365PowerShell";
+            this.buttonOffice365PowerShell.Size = new System.Drawing.Size(65, 22);
+            this.buttonOffice365PowerShell.TabIndex = 15;
+            this.buttonOffice365PowerShell.Text = "Office 365";
+            this.buttonOffice365PowerShell.UseVisualStyleBackColor = true;
+            this.buttonOffice365PowerShell.Click += new System.EventHandler(this.buttonOffice365PowerShell_Click);
             // 
             // checkBoxIgnoreSSLErrors
             // 
@@ -504,16 +515,6 @@
             this.radioButtonUseLocalPowerShell.UseVisualStyleBackColor = true;
             this.radioButtonUseLocalPowerShell.CheckedChanged += new System.EventHandler(this.radioButtonUseLocalPowerShell_CheckedChanged);
             // 
-            // buttonOffice365PowerShell
-            // 
-            this.buttonOffice365PowerShell.Location = new System.Drawing.Point(478, 5);
-            this.buttonOffice365PowerShell.Name = "buttonOffice365PowerShell";
-            this.buttonOffice365PowerShell.Size = new System.Drawing.Size(65, 22);
-            this.buttonOffice365PowerShell.TabIndex = 15;
-            this.buttonOffice365PowerShell.Text = "Office 365";
-            this.buttonOffice365PowerShell.UseVisualStyleBackColor = true;
-            this.buttonOffice365PowerShell.Click += new System.EventHandler(this.buttonOffice365PowerShell_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -526,7 +527,7 @@
             this.MinimumSize = new System.Drawing.Size(899, 568);
             this.Name = "FormMain";
             this.Text = "Exchange PowerShell Automation Test";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -556,7 +557,7 @@
         private System.Windows.Forms.Button buttonRemoveCredential;
         private System.Windows.Forms.Button buttonAddCredential;
         private System.Windows.Forms.ListBox listBoxVariables;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonRunPowerShell;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageOutput;
         private System.Windows.Forms.TextBox textBoxOutput;
