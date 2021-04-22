@@ -498,11 +498,14 @@ namespace ExchangePSAutomationTest
         private void radioButtonUseLocalPowerShell_CheckedChanged(object sender, EventArgs e)
         {
             CloseRunspace();
+            checkBoxProcessAsCommand.Enabled = radioButtonUseLocalPowerShell.Checked;
         }
 
         private void radioButtonUseRemotePowerShell_CheckedChanged(object sender, EventArgs e)
         {
             CloseRunspace();
+            checkBoxProcessAsCommand.Checked = radioButtonUseRemotePowerShell.Checked;
+            checkBoxProcessAsCommand.Enabled = !radioButtonUseRemotePowerShell.Checked;
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -548,11 +551,23 @@ namespace ExchangePSAutomationTest
             textBoxAuthCertificate.Text = _authCertificate.Subject;
         }
 
-        private void buttonOffice365PowerShell_Click(object sender, EventArgs e)
+        private void checkBoxOffice365_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxExchangePSUrl.Text = "https://outlook.office365.com/powershell-liveid/";
-            comboBoxAuthMethod.SelectedIndex = 1; // Basic auth
+            if (checkBoxOffice365.Checked)
+            {
+                textBoxExchangePSUrl.Text = "https://outlook.office365.com/powershell-liveid/";
+                comboBoxAuthMethod.SelectedIndex = 1; // Basic auth
+                if (radioButtonUseRemotePowerShell.Checked)
+                {
+                    checkBoxProcessAsCommand.Checked = true;
+                    checkBoxProcessAsCommand.Enabled = false;
+                }              
+            }
+            comboBoxAuthMethod.Enabled = !checkBoxOffice365.Checked;
+            textBoxExchangePSUrl.ReadOnly = checkBoxOffice365.Checked;
         }
+
         #endregion
+
     }
 }
