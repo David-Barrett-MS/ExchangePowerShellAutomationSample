@@ -37,7 +37,9 @@ namespace ExchangePSAutomationTest
         static bool _ignoreSSLErrors = false;
         static bool _confirmIgnoreSSLErrors = true;
 
-
+        /// <summary>
+        /// Form constructor
+        /// </summary>
         public FormMain()
         {
             InitializeComponent();
@@ -48,6 +50,9 @@ namespace ExchangePSAutomationTest
             _variablesManager.UpdateListBox(listBoxVariables);
         }
 
+        /// <summary>
+        /// Callback for certificate handling
+        /// </summary>
         private static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
             if (_ignoreSSLErrors || (errors == SslPolicyErrors.None))
@@ -65,6 +70,9 @@ namespace ExchangePSAutomationTest
             return false;
         }
 
+        /// <summary>
+        /// Update Auth UI elements
+        /// </summary>
         private void UpdateAuthState()
         {
             textBoxUsername.Enabled = radioButtonSpecificCredentials.Checked;
@@ -100,6 +108,11 @@ namespace ExchangePSAutomationTest
             return propInfo.ToString();
         }
 
+        /// <summary>
+        /// Invoke the PowerShell command/script and write the streams to the UI
+        /// </summary>
+        /// <param name="powershell">PowerShell object to invoke</param>
+        /// <param name="ErrorsOnly">If true, only errors and output will be displayed (default is false)</param>
         Collection<object> InvokeAndReport(PowerShell powershell, bool ErrorsOnly = false)
         {
             Collection<object> result = null;
@@ -127,18 +140,21 @@ namespace ExchangePSAutomationTest
 
                 if (!ErrorsOnly)
                 {
-                    foreach (PSObject obj in result)
+                    if (result != null)
                     {
-                        StringBuilder propInfo = new StringBuilder();
-                        foreach (PSPropertyInfo psPropInfo in obj.Properties)
+                        foreach (PSObject obj in result)
                         {
-                            propInfo.AppendLine(String.Format("{0}: {1}", psPropInfo.Name, psPropInfo.Value));
-                        }
+                            StringBuilder propInfo = new StringBuilder();
+                            foreach (PSPropertyInfo psPropInfo in obj.Properties)
+                            {
+                                propInfo.AppendLine(String.Format("{0}: {1}", psPropInfo.Name, psPropInfo.Value));
+                            }
 
-                        textBoxOutput.Text += String.Format("{0}{1}", propInfo.ToString(), Environment.NewLine);
-                        textBoxOutput.SelectionStart = textBoxOutput.Text.Length;
-                        textBoxOutput.ScrollToCaret();
-                        _outputLog.Log(propInfo.ToString());
+                            textBoxOutput.Text += String.Format("{0}{1}", propInfo.ToString(), Environment.NewLine);
+                            textBoxOutput.SelectionStart = textBoxOutput.Text.Length;
+                            textBoxOutput.ScrollToCaret();
+                            _outputLog.Log(propInfo.ToString());
+                        }
                     }
                 }
             }
@@ -147,6 +163,10 @@ namespace ExchangePSAutomationTest
             return result;
         }
 
+        /// <summary>
+        /// Log an error message
+        /// </summary>
+        /// <param name="Message">The error message</param>
         private void LogError(string Message)
         {
             textBoxErrors.Text += String.Format("{0}{1}", Message, Environment.NewLine);
@@ -156,7 +176,10 @@ namespace ExchangePSAutomationTest
             if (tabControl1.SelectedTab != tabPageErrors)
                 tabControl1.SelectedTab = tabPageErrors;
         }
-        
+
+        /// <summary>
+        /// Connect to remote runspace (for an Exchange runspace, this will be in No-Language mode, which will only allow Exchange cmdlets to run
+        /// </summary>
         private bool ConnectWithRemotePowerShell()
         {
             try
@@ -188,6 +211,9 @@ namespace ExchangePSAutomationTest
             }
         }
 
+        /// <summary>
+        /// Return the currently select authentication mechanism
+        /// </summary>
         private AuthenticationMechanism AuthMethod()
         {
             switch (comboBoxAuthMethod.Text.ToLower())
@@ -202,6 +228,9 @@ namespace ExchangePSAutomationTest
             return AuthenticationMechanism.Default;
         }
 
+        /// <summary>
+        /// Return the currently configured credentials as a PSCredential object
+        /// </summary>
         private PSCredential ExchangeCredentials()
         {
             if (radioButtonDefaultCredentials.Checked)
@@ -217,6 +246,10 @@ namespace ExchangePSAutomationTest
             return Credential;
         }
 
+        /// <summary>
+        /// Import the remote Exchange PowerShell session into a local PowerShell session
+        /// This allows scripts and other cmdlets to be run as well as Exchange cmdlets
+        /// </summary>
         private bool ConnectWithLocalPowerShell()
         {
             // Create a remote runspace
@@ -281,6 +314,10 @@ namespace ExchangePSAutomationTest
             return true;
         }
 
+        /// <summary>
+        /// Connect to Exchange runspace (using currently selected configuration)
+        /// Returns true if successful
+        /// </summary>
         private bool ConnectExchangeRunspace()
         {
             if (!(_exchangeRunspace == null))
@@ -295,6 +332,10 @@ namespace ExchangePSAutomationTest
             return ConnectWithRemotePowerShell();
         }
 
+        /// <summary>
+        /// Checks that a PowerShell Url is valid
+        /// Currently this is just a basic check that the value has been set
+        /// </summary>
         private bool IsValidPSUrl()
         {
             if (textBoxExchangePSUrl.Text.Contains("<server>"))
@@ -306,6 +347,10 @@ namespace ExchangePSAutomationTest
             return true;
         }
 
+        /// <summary>
+        /// Check if there is text (i.e. PowerShell code) available in the UI
+        /// Returns true if text is present (does not do any validation)
+        /// </summary>
         private bool HaveScript()
         {
             if (String.IsNullOrEmpty(textBoxPowerShell.Text))
@@ -336,6 +381,10 @@ namespace ExchangePSAutomationTest
             button1.Enabled = true;
         }
 
+        /// <summary>
+        /// Process the PowerShell
+        /// Obtains the PowerShell session per config and then invokes the script
+        /// </summary>
         private void ProcessScript()
         {
             try
@@ -368,30 +417,44 @@ namespace ExchangePSAutomationTest
             }
         }
 
+        /// <summary>
+        /// Parse a PowerShell text string into a PSCommand with parameters
+        /// </summary>
+        /// <param name="commandLine">The PowerShell code</param>
         private PSCommand ParseCommand(string commandLine)
         {
             PSCommand command = new PSCommand();
             int i = commandLine.IndexOf(" ");
             if (i<0)
             {
+                // The command has no parameters, so add as is
                 command.AddCommand(commandLine);
                 return command;
             }
 
-            // Add the command
+            // Add the command, then we need to deal with parameters
+            
             command.AddCommand(commandLine.Substring(0, i));
+            string parameters = commandLine.Substring(i+1);
+
+            i = parameters.IndexOf("-", i);
+            if (i<0)
+            {
+                // We have parameters, but they are not named - we just add them to the command
+                command.AddArgument(parameters);
+                return command;
+            }
 
             // Now parse and add parameters
             try
             {
-                i = commandLine.IndexOf("-", i);
                 while ((i > 0) && (i < commandLine.Length))
                 {
-                    int j = commandLine.IndexOf("-", i + 1);
-                    if (j < 0) j = commandLine.Length;
-                    int p = commandLine.IndexOf(" ", i + 1);
-                    string sParamName = commandLine.Substring(i + 1, p - i - 1);
-                    string sParamValue = commandLine.Substring(p + 1, j - p - 2).Trim();
+                    int j = parameters.IndexOf("-", i + 1);
+                    if (j < 0) j = parameters.Length;
+                    int p = parameters.IndexOf(" ", i + 1);
+                    string sParamName = parameters.Substring(i + 1, p - i - 1);
+                    string sParamValue = parameters.Substring(p + 1, j - p - 2).Trim();
                     if (sParamValue.StartsWith("\"") && sParamValue.EndsWith("\""))
                         sParamValue = sParamValue.Substring(1, sParamValue.Length - 2);
                     command.AddParameter(sParamName, sParamValue);
@@ -405,6 +468,9 @@ namespace ExchangePSAutomationTest
             return command;
         }
 
+        /// <summary>
+        /// Close the runspace
+        /// </summary>
         private void CloseRunspace()
         {
             try
