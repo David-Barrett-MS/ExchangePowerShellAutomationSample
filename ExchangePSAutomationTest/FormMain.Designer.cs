@@ -429,6 +429,7 @@
             // checkBoxIgnoreSSLErrors
             // 
             this.checkBoxIgnoreSSLErrors.AutoSize = true;
+            this.checkBoxIgnoreSSLErrors.Enabled = false;
             this.checkBoxIgnoreSSLErrors.Location = new System.Drawing.Point(291, 32);
             this.checkBoxIgnoreSSLErrors.Name = "checkBoxIgnoreSSLErrors";
             this.checkBoxIgnoreSSLErrors.Size = new System.Drawing.Size(134, 17);
