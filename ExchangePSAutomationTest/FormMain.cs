@@ -535,6 +535,11 @@ namespace ExchangePSAutomationTest
             form.AddCredential(_variablesManager, this);
         }
 
+        private void buttonRemoveCredential_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void buttonClearCredentials_Click(object sender, EventArgs e)
         {
 

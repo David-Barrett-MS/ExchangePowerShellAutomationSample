@@ -153,12 +153,14 @@
             // 
             // buttonRemoveCredential
             // 
+            this.buttonRemoveCredential.Enabled = false;
             this.buttonRemoveCredential.Location = new System.Drawing.Point(228, 48);
             this.buttonRemoveCredential.Name = "buttonRemoveCredential";
             this.buttonRemoveCredential.Size = new System.Drawing.Size(69, 23);
             this.buttonRemoveCredential.TabIndex = 2;
             this.buttonRemoveCredential.Text = "Remove";
             this.buttonRemoveCredential.UseVisualStyleBackColor = true;
+            this.buttonRemoveCredential.Click += new System.EventHandler(this.buttonRemoveCredential_Click);
             // 
             // buttonAddCredential
             // 
