@@ -186,11 +186,14 @@ namespace ExchangePSAutomationTest
                 }
                 else if (radioButtonCertificateCredential.Checked)
                 {
-                    // Not implemented
-                }
-                else
                     ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", _authCertificate.Thumbprint);
-
+                }
+                else // use logged on user's credentials
+                { 
+                    ConnInfo = new WSManConnectionInfo(new Uri(textBoxExchangePSUrl.Text));
+                    ConnInfo.ShellUri = "http://schemas.microsoft.com/powershell/Microsoft.Exchange";
+                }
+                
                 ConnInfo.AuthenticationMechanism = AuthMethod();
                 ConnInfo.MaximumConnectionRedirectionCount = 0;
                 if (checkBoxAllowRedirection.Checked)
