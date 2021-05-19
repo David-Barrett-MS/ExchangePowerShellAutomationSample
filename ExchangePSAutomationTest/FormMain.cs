@@ -419,7 +419,7 @@ namespace ExchangePSAutomationTest
             command.AddCommand(commandLine.Substring(0, i));
             string parameters = commandLine.Substring(i+1);
 
-            i = parameters.IndexOf("-", i);
+            i = parameters.IndexOf("-");
             if (i<0)
             {
                 // We have parameters, but they are not named - we just add them to the command
