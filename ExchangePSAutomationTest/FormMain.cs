@@ -430,13 +430,13 @@ namespace ExchangePSAutomationTest
             // Now parse and add parameters
             try
             {
-                while ((i > 0) && (i < commandLine.Length))
+                while ((i > 0) && (i < parameters.Length))
                 {
                     int j = parameters.IndexOf("-", i + 1);
                     if (j < 0) j = parameters.Length;
                     int p = parameters.IndexOf(" ", i + 1);
                     string sParamName = parameters.Substring(i + 1, p - i - 1);
-                    string sParamValue = parameters.Substring(p + 1, j - p - 2).Trim();
+                    string sParamValue = parameters.Substring(p + 1, j - p - 1).Trim();
                     if (sParamValue.StartsWith("\"") && sParamValue.EndsWith("\""))
                         sParamValue = sParamValue.Substring(1, sParamValue.Length - 2);
                     command.AddParameter(sParamName, sParamValue);
