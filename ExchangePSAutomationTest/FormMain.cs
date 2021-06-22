@@ -268,7 +268,7 @@ namespace ExchangePSAutomationTest
         }
 
         /// <summary>
-        /// Create the New-PSSession command
+        /// Create the Connect-ExchangeOnline command
         /// </summary>
         private PSCommand ConnectExchangeOnline(PSCredential Credential = null)
         {
