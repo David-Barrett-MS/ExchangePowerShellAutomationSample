@@ -58,6 +58,7 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelUsername = new System.Windows.Forms.Label();
             this.tabPagePowerShell = new System.Windows.Forms.TabPage();
+            this.checkBoxOffice365 = new System.Windows.Forms.CheckBox();
             this.checkBoxIgnoreSSLErrors = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowRedirection = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -66,7 +67,7 @@
             this.textBoxExchangePSUrl = new System.Windows.Forms.TextBox();
             this.radioButtonUseRemotePowerShell = new System.Windows.Forms.RadioButton();
             this.radioButtonUseLocalPowerShell = new System.Windows.Forms.RadioButton();
-            this.checkBoxOffice365 = new System.Windows.Forms.CheckBox();
+            this.checkBoxEXOv2 = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -402,6 +403,7 @@
             // 
             // tabPagePowerShell
             // 
+            this.tabPagePowerShell.Controls.Add(this.checkBoxEXOv2);
             this.tabPagePowerShell.Controls.Add(this.checkBoxOffice365);
             this.tabPagePowerShell.Controls.Add(this.checkBoxIgnoreSSLErrors);
             this.tabPagePowerShell.Controls.Add(this.checkBoxAllowRedirection);
@@ -418,6 +420,17 @@
             this.tabPagePowerShell.TabIndex = 1;
             this.tabPagePowerShell.Text = "PowerShell Options";
             this.tabPagePowerShell.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxOffice365
+            // 
+            this.checkBoxOffice365.AutoSize = true;
+            this.checkBoxOffice365.Location = new System.Drawing.Point(385, 9);
+            this.checkBoxOffice365.Name = "checkBoxOffice365";
+            this.checkBoxOffice365.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxOffice365.TabIndex = 16;
+            this.checkBoxOffice365.Text = "Exchange Online";
+            this.checkBoxOffice365.UseVisualStyleBackColor = true;
+            this.checkBoxOffice365.CheckedChanged += new System.EventHandler(this.checkBoxOffice365_CheckedChanged);
             // 
             // checkBoxIgnoreSSLErrors
             // 
@@ -481,17 +494,19 @@
             // 
             this.textBoxExchangePSUrl.Location = new System.Drawing.Point(103, 6);
             this.textBoxExchangePSUrl.Name = "textBoxExchangePSUrl";
-            this.textBoxExchangePSUrl.Size = new System.Drawing.Size(322, 20);
+            this.textBoxExchangePSUrl.Size = new System.Drawing.Size(276, 20);
             this.textBoxExchangePSUrl.TabIndex = 9;
             this.textBoxExchangePSUrl.Text = "http://exchange/powershell";
             // 
             // radioButtonUseRemotePowerShell
             // 
             this.radioButtonUseRemotePowerShell.AutoSize = true;
+            this.radioButtonUseRemotePowerShell.Checked = true;
             this.radioButtonUseRemotePowerShell.Location = new System.Drawing.Point(554, 31);
             this.radioButtonUseRemotePowerShell.Name = "radioButtonUseRemotePowerShell";
             this.radioButtonUseRemotePowerShell.Size = new System.Drawing.Size(291, 17);
             this.radioButtonUseRemotePowerShell.TabIndex = 8;
+            this.radioButtonUseRemotePowerShell.TabStop = true;
             this.radioButtonUseRemotePowerShell.Text = "Use remote PowerShell session (cmdlets all run remotely)";
             this.radioButtonUseRemotePowerShell.UseVisualStyleBackColor = true;
             this.radioButtonUseRemotePowerShell.CheckedChanged += new System.EventHandler(this.radioButtonUseRemotePowerShell_CheckedChanged);
@@ -499,26 +514,24 @@
             // radioButtonUseLocalPowerShell
             // 
             this.radioButtonUseLocalPowerShell.AutoSize = true;
-            this.radioButtonUseLocalPowerShell.Checked = true;
             this.radioButtonUseLocalPowerShell.Location = new System.Drawing.Point(554, 8);
             this.radioButtonUseLocalPowerShell.Name = "radioButtonUseLocalPowerShell";
             this.radioButtonUseLocalPowerShell.Size = new System.Drawing.Size(273, 17);
             this.radioButtonUseLocalPowerShell.TabIndex = 7;
-            this.radioButtonUseLocalPowerShell.TabStop = true;
             this.radioButtonUseLocalPowerShell.Text = "Use local PowerShell session (import remote session)";
             this.radioButtonUseLocalPowerShell.UseVisualStyleBackColor = true;
             this.radioButtonUseLocalPowerShell.CheckedChanged += new System.EventHandler(this.radioButtonUseLocalPowerShell_CheckedChanged);
             // 
-            // checkBoxOffice365
+            // checkBoxEXOv2
             // 
-            this.checkBoxOffice365.AutoSize = true;
-            this.checkBoxOffice365.Location = new System.Drawing.Point(431, 9);
-            this.checkBoxOffice365.Name = "checkBoxOffice365";
-            this.checkBoxOffice365.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxOffice365.TabIndex = 16;
-            this.checkBoxOffice365.Text = "Exchange Online";
-            this.checkBoxOffice365.UseVisualStyleBackColor = true;
-            this.checkBoxOffice365.CheckedChanged += new System.EventHandler(this.checkBoxOffice365_CheckedChanged);
+            this.checkBoxEXOv2.AutoSize = true;
+            this.checkBoxEXOv2.Location = new System.Drawing.Point(495, 9);
+            this.checkBoxEXOv2.Name = "checkBoxEXOv2";
+            this.checkBoxEXOv2.Size = new System.Drawing.Size(38, 17);
+            this.checkBoxEXOv2.TabIndex = 17;
+            this.checkBoxEXOv2.Text = "v2";
+            this.checkBoxEXOv2.UseVisualStyleBackColor = true;
+            this.checkBoxEXOv2.CheckedChanged += new System.EventHandler(this.checkBoxEXOv2_CheckedChanged);
             // 
             // FormMain
             // 
@@ -593,6 +606,7 @@
         private System.Windows.Forms.Button buttonChooseCertificate;
         private System.Windows.Forms.TextBox textBoxAuthCertificate;
         private System.Windows.Forms.CheckBox checkBoxOffice365;
+        private System.Windows.Forms.CheckBox checkBoxEXOv2;
     }
 }
 
