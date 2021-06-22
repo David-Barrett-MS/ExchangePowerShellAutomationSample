@@ -300,7 +300,7 @@ namespace ExchangePSAutomationTest
                 powershell.Runspace = _exchangeRunspace;
 
 
-                if (checkBoxEXOv2.Checked)
+                if (checkBoxOffice365.Checked && checkBoxEXOv2.Checked)
                 {
                     // Connect to EXO v2
                     sessionState.ImportPSModule(new string[] { "ExchangeOnlineManagement" });
@@ -604,10 +604,11 @@ namespace ExchangePSAutomationTest
                 {
                     checkBoxProcessAsCommand.Checked = true;
                     checkBoxProcessAsCommand.Enabled = false;
-                }              
+                }
             }
             comboBoxAuthMethod.Enabled = !checkBoxOffice365.Checked;
             textBoxExchangePSUrl.ReadOnly = checkBoxOffice365.Checked;
+            checkBoxEXOv2.Enabled = checkBoxOffice365.Checked;
         }
 
         #endregion

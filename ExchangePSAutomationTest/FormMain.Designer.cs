@@ -525,6 +525,7 @@
             // checkBoxEXOv2
             // 
             this.checkBoxEXOv2.AutoSize = true;
+            this.checkBoxEXOv2.Enabled = false;
             this.checkBoxEXOv2.Location = new System.Drawing.Point(495, 9);
             this.checkBoxEXOv2.Name = "checkBoxEXOv2";
             this.checkBoxEXOv2.Size = new System.Drawing.Size(38, 17);
