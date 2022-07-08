@@ -1,14 +1,14 @@
 ﻿/*
- * By David Barrett, Microsoft Ltd. 2014-2021. Use at your own risk.  No warranties are given.
+ * By David Barrett, Microsoft Ltd. 2014-2022. Use at your own risk.  No warranties are given.
  * 
- * DISCLAIMER:
- * THIS CODE IS SAMPLE CODE. THESE SAMPLES ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
- * MICROSOFT FURTHER DISCLAIMS ALL IMPLIED WARRANTIES INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR OF FITNESS FOR
- * A PARTICULAR PURPOSE. THE ENTIRE RISK ARISING OUT OF THE USE OR PERFORMANCE OF THE SAMPLES REMAINS WITH YOU. IN NO EVENT SHALL
- * MICROSOFT OR ITS SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
- * BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR OTHER PECUNIARY LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE THE
- * SAMPLES, EVEN IF MICROSOFT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. BECAUSE SOME STATES DO NOT ALLOW THE EXCLUSION OR LIMITATION
- * OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  * */
 
 using System;
@@ -48,6 +48,7 @@ namespace ExchangePSAutomationTest
             _outputLog = new ClassLogger("output.log");
             comboBoxAuthMethod.SelectedIndex = 0;
             _variablesManager.UpdateListBox(listBoxVariables);
+            checkBoxOffice365.Checked = true;
         }
 
         /// <summary>
@@ -179,22 +180,31 @@ namespace ExchangePSAutomationTest
             {
                 // Set our ConnectionInfo for the Exchange remote session
                 WSManConnectionInfo ConnInfo = null;
-                PSCredential Credential = ExchangeCredentials();
-                if (radioButtonSpecificCredentials.Checked)
+
+                if (radioButtonCertificateCredential.Checked)
                 {
-                    ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", Credential);
+                    // Configure certificate authentication
                 }
-                else if (radioButtonCertificateCredential.Checked)
+                else
                 {
-                    ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", _authCertificate.Thumbprint);
+                    PSCredential Credential = ExchangeCredentials();
+                    if (radioButtonSpecificCredentials.Checked)
+                    {
+                        ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", Credential);
+                    }
+                    else if (radioButtonCertificateCredential.Checked)
+                    {
+                        ConnInfo = new WSManConnectionInfo((new Uri(textBoxExchangePSUrl.Text)), "http://schemas.microsoft.com/powershell/Microsoft.Exchange", _authCertificate.Thumbprint);
+                    }
+                    else // use logged on user's credentials
+                    {
+                        ConnInfo = new WSManConnectionInfo(new Uri(textBoxExchangePSUrl.Text));
+                        ConnInfo.ShellUri = "http://schemas.microsoft.com/powershell/Microsoft.Exchange";
+                    }
+
+                    ConnInfo.AuthenticationMechanism = AuthMethod();
                 }
-                else // use logged on user's credentials
-                { 
-                    ConnInfo = new WSManConnectionInfo(new Uri(textBoxExchangePSUrl.Text));
-                    ConnInfo.ShellUri = "http://schemas.microsoft.com/powershell/Microsoft.Exchange";
-                }
-                
-                ConnInfo.AuthenticationMechanism = AuthMethod();
+
                 ConnInfo.MaximumConnectionRedirectionCount = 0;
                 if (checkBoxAllowRedirection.Checked)
                     ConnInfo.MaximumConnectionRedirectionCount = 10;
@@ -249,17 +259,35 @@ namespace ExchangePSAutomationTest
         }
 
         /// <summary>
+        /// Add the authentication parameters session connection command
+        /// </summary>
+        private void AddAuthParameterForSession(PSCommand command)
+        {
+            if (radioButtonSpecificCredentials.Checked)
+            {
+                command.AddParameter("Credential", ExchangeCredentials());
+            }
+            else if (radioButtonCertificateCredential.Checked)
+            {
+                if (checkBoxEXOv2.Checked)
+                    command.AddParameter("Certificate", _authCertificate);
+                else
+                    command.AddParameter("CertificateThumbprint", _authCertificate.Thumbprint);
+            }
+        }
+
+        /// <summary>
         /// Create the New-PSSession command
         /// </summary>
-        private PSCommand NewPSSession(PSCredential Credential = null)
+        private PSCommand NewPSSession()
         {
             PSCommand command = new PSCommand();
             command.AddCommand("New-PSSession");
             command.AddParameter("ConfigurationName", "Microsoft.Exchange");
             command.AddParameter("ConnectionUri", new Uri(textBoxExchangePSUrl.Text));
             command.AddParameter("Authentication", comboBoxAuthMethod.Text);
-            if (!(Credential == null))
-                command.AddParameter("Credential", Credential);
+
+            AddAuthParameterForSession(command);
 
             if (checkBoxAllowRedirection.Checked)
                 command.AddParameter("AllowRedirection");
@@ -274,9 +302,8 @@ namespace ExchangePSAutomationTest
         {
             PSCommand command = new PSCommand();
             command.AddCommand("Connect-ExchangeOnline");
+            AddAuthParameterForSession(command);
 
-            if (!(Credential == null))
-                command.AddParameter("Credential", Credential);
 
             return command;
         }
@@ -289,8 +316,6 @@ namespace ExchangePSAutomationTest
         {
             try
             {
-                PSCredential Credential = ExchangeCredentials();
-
                 // Create and open the local PowerShell runspace
                 _exchangeRunspace = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace();
                 _exchangeRunspace.Open();
@@ -304,13 +329,13 @@ namespace ExchangePSAutomationTest
                 {
                     // Connect to EXO v2
                     sessionState.ImportPSModule(new string[] { "ExchangeOnlineManagement" });
-                    powershell.Commands = ConnectExchangeOnline(Credential);
+                    powershell.Commands = ConnectExchangeOnline();
                     InvokeAndReport(powershell);
                 }
                 else
                 {
                     // Create New-PSSession command
-                    powershell.Commands = NewPSSession(Credential);
+                    powershell.Commands = NewPSSession();
 
                     // Run the New-PSSession command in the local PowerShell runspace
                     Collection<object> result = InvokeAndReport(powershell);
@@ -324,7 +349,7 @@ namespace ExchangePSAutomationTest
                     powershell = PowerShell.Create();
                     PSCommand command = new PSCommand();
                     command.AddCommand("Set-Variable");
-                    command.AddParameter("Name", "ra");
+                    command.AddParameter("Name", "ExchangeSession");
                     command.AddParameter("Value", result[0]);
                     powershell.Commands = command;
                     powershell.Runspace = _exchangeRunspace;
@@ -468,16 +493,35 @@ namespace ExchangePSAutomationTest
             // Now parse and add parameters
             try
             {
-                while ((i > 0) && (i < parameters.Length))
+                while ((i >= 0) && (i < parameters.Length))
                 {
                     int j = parameters.IndexOf("-", i + 1);
-                    if (j < 0) j = parameters.Length;
-                    int p = parameters.IndexOf(" ", i + 1);
+                    if (j > 0)
+                    {
+                        // Check that the '-' isn't part of a value (it will be preceded by a space if it is a real parameter)
+                        while (j>0 && parameters[j - 1] != ' ')
+                        {
+                            j = parameters.IndexOf("-", j + 1);
+                        }
+                    }
+                    if (j < 0)
+                        j = parameters.Length;
+
+                    int p = parameters.IndexOf(" ", i + 1); // Note that parameters can also be split using ':'.  We don't check for this.
                     string sParamName = parameters.Substring(i + 1, p - i - 1);
                     string sParamValue = parameters.Substring(p + 1, j - p - 1).Trim();
+
                     if (sParamValue.StartsWith("\"") && sParamValue.EndsWith("\""))
                         sParamValue = sParamValue.Substring(1, sParamValue.Length - 2);
-                    command.AddParameter(sParamName, sParamValue);
+
+                    // We currently only check for boolean parameters and treat everything else as a string
+                    if (sParamValue.Equals("$false", StringComparison.OrdinalIgnoreCase))
+                        command.AddParameter(sParamName, false);
+                    else if (sParamValue.Equals("$true", StringComparison.OrdinalIgnoreCase))
+                        command.AddParameter(sParamName, true);
+                    else 
+                        command.AddParameter(sParamName, sParamValue);
+
                     i = j;
                 }
             }
@@ -501,6 +545,7 @@ namespace ExchangePSAutomationTest
             catch { }
             _exchangeRunspace = null;
         }
+
 
         #region UIEvents
 
@@ -611,12 +656,17 @@ namespace ExchangePSAutomationTest
             checkBoxEXOv2.Enabled = checkBoxOffice365.Checked;
         }
 
-        #endregion
-
         private void checkBoxEXOv2_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxEXOv2.Checked)
                 radioButtonUseLocalPowerShell.Checked = true;
         }
+
+        private void radioButtonCertificateCredential_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAuthState();
+        }
+
+        #endregion
     }
 }
