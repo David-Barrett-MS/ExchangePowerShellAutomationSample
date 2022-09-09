@@ -22,7 +22,7 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-
+using System.Threading.Tasks;
 
 namespace ExchangePSAutomationTest
 {
@@ -34,6 +34,8 @@ namespace ExchangePSAutomationTest
         private ClassLogger _outputLog = null;
         private PSVariablesManager _variablesManager = new PSVariablesManager();
         private X509Certificate2 _authCertificate = null;
+        private Task _scriptRunnerTask = null;
+        private DateTime _scriptRunStart = DateTime.MinValue;
         static bool _ignoreSSLErrors = false;
         static bool _confirmIgnoreSSLErrors = true;
 
@@ -49,6 +51,7 @@ namespace ExchangePSAutomationTest
             comboBoxAuthMethod.SelectedIndex = 0;
             _variablesManager.UpdateListBox(listBoxVariables);
             checkBoxOffice365.Checked = true;
+            checkBoxEXOv2_CheckedChanged(this, null);
         }
 
         /// <summary>
@@ -102,6 +105,24 @@ namespace ExchangePSAutomationTest
             return propInfo.ToString();
         }
 
+        private void LogOutput(string data, TextBox targetTextBox = null)
+        {
+            if (targetTextBox == null)
+                targetTextBox = textBoxOutput;
+
+            Action action = new Action(() =>
+            {
+                targetTextBox.Text += data;
+                targetTextBox.SelectionStart = targetTextBox.Text.Length;
+                targetTextBox.ScrollToCaret();
+            });
+
+            if (targetTextBox.InvokeRequired)
+                targetTextBox.Invoke(action, null);
+            else
+                action();
+        }
+
         /// <summary>
         /// Invoke the PowerShell command/script and write the streams to the UI
         /// </summary>
@@ -110,6 +131,7 @@ namespace ExchangePSAutomationTest
         Collection<object> InvokeAndReport(PowerShell powershell, bool ErrorsOnly = false)
         {
             Collection<object> result = null;
+            _scriptRunStart = DateTime.Now;
             try
             {
                 result = powershell.Invoke<object>();
@@ -126,9 +148,7 @@ namespace ExchangePSAutomationTest
 
                 foreach (VerboseRecord record in powershell.Streams.Verbose)
                 {
-                    textBoxVerbose.Text += String.Format("{0}{1}", record.Message.ToString(), Environment.NewLine);
-                    textBoxVerbose.SelectionStart = textBoxVerbose.Text.Length;
-                    textBoxVerbose.ScrollToCaret();
+                    LogOutput($"{record.Message}{Environment.NewLine}", textBoxVerbose);
                     _verboseLog.Log(record.Message.ToString());
                 }
 
@@ -144,9 +164,7 @@ namespace ExchangePSAutomationTest
                                 propInfo.AppendLine(String.Format("{0}: {1}", psPropInfo.Name, psPropInfo.Value));
                             }
 
-                            textBoxOutput.Text += String.Format("{0}{1}", propInfo.ToString(), Environment.NewLine);
-                            textBoxOutput.SelectionStart = textBoxOutput.Text.Length;
-                            textBoxOutput.ScrollToCaret();
+                            LogOutput($"{propInfo}{Environment.NewLine}");
                             _outputLog.Log(propInfo.ToString());
                         }
                     }
@@ -163,9 +181,7 @@ namespace ExchangePSAutomationTest
         /// <param name="Message">The error message</param>
         private void LogError(string Message)
         {
-            textBoxErrors.Text += String.Format("{0}{1}", Message, Environment.NewLine);
-            textBoxErrors.SelectionStart = textBoxErrors.Text.Length;
-            textBoxErrors.ScrollToCaret();
+            LogOutput($"{Message}{Environment.NewLine}", textBoxErrors);
             _errorLog.Log(Message);
             if (tabControl1.SelectedTab != tabPageErrors)
                 tabControl1.SelectedTab = tabPageErrors;
@@ -265,7 +281,13 @@ namespace ExchangePSAutomationTest
         {
             if (radioButtonSpecificCredentials.Checked)
             {
-                command.AddParameter("Credential", ExchangeCredentials());
+                if (checkBoxEXOv2.Checked)
+                {
+                    if (!String.IsNullOrEmpty(textBoxUsername.Text))
+                        command.AddParameter("UserPrincipalName", textBoxUsername.Text);                    
+                }
+                else
+                    command.AddParameter("Credential", ExchangeCredentials());
             }
             else if (radioButtonCertificateCredential.Checked)
             {
@@ -561,6 +583,13 @@ namespace ExchangePSAutomationTest
 
         private void buttonRunPowerShell_Click(object sender, EventArgs e)
         {
+            if (_scriptRunnerTask != null)
+            {
+                if (_scriptRunnerTask.Status == TaskStatus.Running)
+                    return;
+                _scriptRunnerTask.Dispose();
+                _scriptRunnerTask = null;
+            }
             if (!IsValidPSUrl())
                 return;
             if (!HaveScript())
@@ -571,11 +600,12 @@ namespace ExchangePSAutomationTest
 
             if (ConnectExchangeRunspace())
             {
-                ProcessScript();
+                _scriptRunnerTask = new Task(new Action(() => { ProcessScript(); }));
+                _scriptRunnerTask.Start();
             }
 
             this.Cursor = cursor;
-            buttonRunPowerShell.Enabled = true;
+            timerTaskMonitor.Start();
         }
 
         private void radioButtonUseLocalPowerShell_CheckedChanged(object sender, EventArgs e)
@@ -618,15 +648,6 @@ namespace ExchangePSAutomationTest
             form.AddCredential(_variablesManager, this);
         }
 
-        private void buttonRemoveCredential_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonClearCredentials_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void buttonChooseCertificate_Click(object sender, EventArgs e)
         {
@@ -659,7 +680,16 @@ namespace ExchangePSAutomationTest
         private void checkBoxEXOv2_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxEXOv2.Checked)
+            {
                 radioButtonUseLocalPowerShell.Checked = true;
+                if (radioButtonDefaultCredentials.Checked)
+                    radioButtonSpecificCredentials.Checked = true;
+
+            }
+
+            textBoxPassword.Visible = !checkBoxEXOv2.Checked;
+            labelPassword.Visible = !checkBoxEXOv2.Checked;
+            radioButtonDefaultCredentials.Enabled = !checkBoxEXOv2.Checked;
         }
 
         private void radioButtonCertificateCredential_CheckedChanged(object sender, EventArgs e)
@@ -668,5 +698,20 @@ namespace ExchangePSAutomationTest
         }
 
         #endregion
+
+        private void timerTaskMonitor_Tick(object sender, EventArgs e)
+        {
+            if (_scriptRunnerTask != null && _scriptRunnerTask.Status == TaskStatus.Running)
+                return;
+
+            timerTaskMonitor.Stop();
+            LogOutput($"{Environment.NewLine}Script completed in {DateTime.Now.Subtract(_scriptRunStart)}{Environment.NewLine}");
+            _scriptRunStart = DateTime.MinValue;
+
+            _scriptRunnerTask.Dispose();
+            _scriptRunnerTask = null;
+
+            buttonRunPowerShell.Enabled = true;
+        }
     }
 }

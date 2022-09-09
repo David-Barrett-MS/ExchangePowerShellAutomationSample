@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBoxPowerShell = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonRunPowerShell = new System.Windows.Forms.Button();
@@ -47,16 +48,6 @@
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.buttonClearLogs = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPageAuthentication = new System.Windows.Forms.TabPage();
-            this.buttonChooseCertificate = new System.Windows.Forms.Button();
-            this.textBoxAuthCertificate = new System.Windows.Forms.TextBox();
-            this.radioButtonCertificateCredential = new System.Windows.Forms.RadioButton();
-            this.radioButtonSpecificCredentials = new System.Windows.Forms.RadioButton();
-            this.radioButtonDefaultCredentials = new System.Windows.Forms.RadioButton();
-            this.labelPassword = new System.Windows.Forms.Label();
-            this.textBoxUsername = new System.Windows.Forms.TextBox();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
-            this.labelUsername = new System.Windows.Forms.Label();
             this.tabPagePowerShell = new System.Windows.Forms.TabPage();
             this.checkBoxEXOv2 = new System.Windows.Forms.CheckBox();
             this.checkBoxOffice365 = new System.Windows.Forms.CheckBox();
@@ -68,6 +59,17 @@
             this.textBoxExchangePSUrl = new System.Windows.Forms.TextBox();
             this.radioButtonUseRemotePowerShell = new System.Windows.Forms.RadioButton();
             this.radioButtonUseLocalPowerShell = new System.Windows.Forms.RadioButton();
+            this.tabPageAuthv1 = new System.Windows.Forms.TabPage();
+            this.buttonChooseCertificate = new System.Windows.Forms.Button();
+            this.textBoxAuthCertificate = new System.Windows.Forms.TextBox();
+            this.radioButtonCertificateCredential = new System.Windows.Forms.RadioButton();
+            this.radioButtonSpecificCredentials = new System.Windows.Forms.RadioButton();
+            this.radioButtonDefaultCredentials = new System.Windows.Forms.RadioButton();
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.labelUsername = new System.Windows.Forms.Label();
+            this.timerTaskMonitor = new System.Windows.Forms.Timer(this.components);
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -76,8 +78,8 @@
             this.tabPageVerbose.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
             this.tabControl2.SuspendLayout();
-            this.tabPageAuthentication.SuspendLayout();
             this.tabPagePowerShell.SuspendLayout();
+            this.tabPageAuthv1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxPowerShell
@@ -88,8 +90,9 @@
             this.textBoxPowerShell.Location = new System.Drawing.Point(3, 16);
             this.textBoxPowerShell.Multiline = true;
             this.textBoxPowerShell.Name = "textBoxPowerShell";
-            this.textBoxPowerShell.Size = new System.Drawing.Size(541, 153);
+            this.textBoxPowerShell.Size = new System.Drawing.Size(539, 153);
             this.textBoxPowerShell.TabIndex = 4;
+            this.textBoxPowerShell.Text = "Get-Mailbox";
             // 
             // groupBox2
             // 
@@ -100,7 +103,7 @@
             this.groupBox2.Controls.Add(this.textBoxPowerShell);
             this.groupBox2.Location = new System.Drawing.Point(12, 105);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(550, 204);
+            this.groupBox2.Size = new System.Drawing.Size(548, 204);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "PowerShell Script";
@@ -108,11 +111,11 @@
             // buttonRunPowerShell
             // 
             this.buttonRunPowerShell.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRunPowerShell.Location = new System.Drawing.Point(370, 175);
+            this.buttonRunPowerShell.Location = new System.Drawing.Point(460, 175);
             this.buttonRunPowerShell.Name = "buttonRunPowerShell";
-            this.buttonRunPowerShell.Size = new System.Drawing.Size(174, 23);
+            this.buttonRunPowerShell.Size = new System.Drawing.Size(82, 23);
             this.buttonRunPowerShell.TabIndex = 7;
-            this.buttonRunPowerShell.Text = "Connect and run PowerShell";
+            this.buttonRunPowerShell.Text = "Run script";
             this.buttonRunPowerShell.UseVisualStyleBackColor = true;
             this.buttonRunPowerShell.Click += new System.EventHandler(this.buttonRunPowerShell_Click);
             // 
@@ -120,7 +123,7 @@
             // 
             this.checkBoxProcessAsCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxProcessAsCommand.AutoSize = true;
-            this.checkBoxProcessAsCommand.Location = new System.Drawing.Point(3, 179);
+            this.checkBoxProcessAsCommand.Location = new System.Drawing.Point(1, 179);
             this.checkBoxProcessAsCommand.Name = "checkBoxProcessAsCommand";
             this.checkBoxProcessAsCommand.Size = new System.Drawing.Size(217, 17);
             this.checkBoxProcessAsCommand.TabIndex = 5;
@@ -134,7 +137,7 @@
             this.groupBox6.Controls.Add(this.buttonRemoveCredential);
             this.groupBox6.Controls.Add(this.buttonAddCredential);
             this.groupBox6.Controls.Add(this.listBoxVariables);
-            this.groupBox6.Location = new System.Drawing.Point(568, 105);
+            this.groupBox6.Location = new System.Drawing.Point(566, 105);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(303, 204);
             this.groupBox6.TabIndex = 11;
@@ -150,7 +153,6 @@
             this.buttonClearCredentials.TabIndex = 3;
             this.buttonClearCredentials.Text = "Clear";
             this.buttonClearCredentials.UseVisualStyleBackColor = true;
-            this.buttonClearCredentials.Click += new System.EventHandler(this.buttonClearCredentials_Click);
             // 
             // buttonRemoveCredential
             // 
@@ -161,7 +163,6 @@
             this.buttonRemoveCredential.TabIndex = 2;
             this.buttonRemoveCredential.Text = "Remove";
             this.buttonRemoveCredential.UseVisualStyleBackColor = true;
-            this.buttonRemoveCredential.Click += new System.EventHandler(this.buttonRemoveCredential_Click);
             // 
             // buttonAddCredential
             // 
@@ -194,7 +195,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 315);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(860, 201);
+            this.tabControl1.Size = new System.Drawing.Size(858, 221);
             this.tabControl1.TabIndex = 12;
             // 
             // tabPageOutput
@@ -202,8 +203,8 @@
             this.tabPageOutput.Controls.Add(this.textBoxOutput);
             this.tabPageOutput.Location = new System.Drawing.Point(4, 22);
             this.tabPageOutput.Name = "tabPageOutput";
-            this.tabPageOutput.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOutput.Size = new System.Drawing.Size(852, 175);
+            this.tabPageOutput.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageOutput.Size = new System.Drawing.Size(850, 195);
             this.tabPageOutput.TabIndex = 0;
             this.tabPageOutput.Text = "Output";
             this.tabPageOutput.UseVisualStyleBackColor = true;
@@ -216,7 +217,7 @@
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOutput.Size = new System.Drawing.Size(846, 169);
+            this.textBoxOutput.Size = new System.Drawing.Size(844, 189);
             this.textBoxOutput.TabIndex = 1;
             // 
             // tabPageErrors
@@ -224,7 +225,7 @@
             this.tabPageErrors.Controls.Add(this.textBoxErrors);
             this.tabPageErrors.Location = new System.Drawing.Point(4, 22);
             this.tabPageErrors.Name = "tabPageErrors";
-            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageErrors.Size = new System.Drawing.Size(852, 175);
             this.tabPageErrors.TabIndex = 1;
             this.tabPageErrors.Text = "Errors";
@@ -286,120 +287,12 @@
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPagePowerShell);
-            this.tabControl2.Controls.Add(this.tabPageAuthentication);
+            this.tabControl2.Controls.Add(this.tabPageAuthv1);
             this.tabControl2.Location = new System.Drawing.Point(12, 12);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(859, 87);
             this.tabControl2.TabIndex = 13;
-            // 
-            // tabPageAuthentication
-            // 
-            this.tabPageAuthentication.Controls.Add(this.buttonChooseCertificate);
-            this.tabPageAuthentication.Controls.Add(this.textBoxAuthCertificate);
-            this.tabPageAuthentication.Controls.Add(this.radioButtonCertificateCredential);
-            this.tabPageAuthentication.Controls.Add(this.radioButtonSpecificCredentials);
-            this.tabPageAuthentication.Controls.Add(this.radioButtonDefaultCredentials);
-            this.tabPageAuthentication.Controls.Add(this.labelPassword);
-            this.tabPageAuthentication.Controls.Add(this.textBoxUsername);
-            this.tabPageAuthentication.Controls.Add(this.textBoxPassword);
-            this.tabPageAuthentication.Controls.Add(this.labelUsername);
-            this.tabPageAuthentication.Location = new System.Drawing.Point(4, 22);
-            this.tabPageAuthentication.Name = "tabPageAuthentication";
-            this.tabPageAuthentication.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAuthentication.Size = new System.Drawing.Size(851, 61);
-            this.tabPageAuthentication.TabIndex = 0;
-            this.tabPageAuthentication.Text = "Authentication (v1)";
-            this.tabPageAuthentication.UseVisualStyleBackColor = true;
-            // 
-            // buttonChooseCertificate
-            // 
-            this.buttonChooseCertificate.Location = new System.Drawing.Point(773, 29);
-            this.buttonChooseCertificate.Name = "buttonChooseCertificate";
-            this.buttonChooseCertificate.Size = new System.Drawing.Size(75, 20);
-            this.buttonChooseCertificate.TabIndex = 28;
-            this.buttonChooseCertificate.Text = "Choose...";
-            this.buttonChooseCertificate.UseVisualStyleBackColor = true;
-            this.buttonChooseCertificate.Click += new System.EventHandler(this.buttonChooseCertificate_Click);
-            // 
-            // textBoxAuthCertificate
-            // 
-            this.textBoxAuthCertificate.Location = new System.Drawing.Point(456, 29);
-            this.textBoxAuthCertificate.Name = "textBoxAuthCertificate";
-            this.textBoxAuthCertificate.ReadOnly = true;
-            this.textBoxAuthCertificate.Size = new System.Drawing.Size(317, 20);
-            this.textBoxAuthCertificate.TabIndex = 27;
-            // 
-            // radioButtonCertificateCredential
-            // 
-            this.radioButtonCertificateCredential.AutoSize = true;
-            this.radioButtonCertificateCredential.Location = new System.Drawing.Point(345, 6);
-            this.radioButtonCertificateCredential.Name = "radioButtonCertificateCredential";
-            this.radioButtonCertificateCredential.Size = new System.Drawing.Size(163, 17);
-            this.radioButtonCertificateCredential.TabIndex = 20;
-            this.radioButtonCertificateCredential.TabStop = true;
-            this.radioButtonCertificateCredential.Text = "Use certificate authentication";
-            this.radioButtonCertificateCredential.UseVisualStyleBackColor = true;
-            this.radioButtonCertificateCredential.CheckedChanged += new System.EventHandler(this.radioButtonCertificateCredential_CheckedChanged);
-            // 
-            // radioButtonSpecificCredentials
-            // 
-            this.radioButtonSpecificCredentials.AutoSize = true;
-            this.radioButtonSpecificCredentials.Location = new System.Drawing.Point(193, 6);
-            this.radioButtonSpecificCredentials.Name = "radioButtonSpecificCredentials";
-            this.radioButtonSpecificCredentials.Size = new System.Drawing.Size(146, 17);
-            this.radioButtonSpecificCredentials.TabIndex = 15;
-            this.radioButtonSpecificCredentials.Text = "Use specified credentials:";
-            this.radioButtonSpecificCredentials.UseVisualStyleBackColor = true;
-            this.radioButtonSpecificCredentials.CheckedChanged += new System.EventHandler(this.radioButtonSpecificCredentials_CheckedChanged);
-            // 
-            // radioButtonDefaultCredentials
-            // 
-            this.radioButtonDefaultCredentials.AutoSize = true;
-            this.radioButtonDefaultCredentials.Checked = true;
-            this.radioButtonDefaultCredentials.Location = new System.Drawing.Point(6, 6);
-            this.radioButtonDefaultCredentials.Name = "radioButtonDefaultCredentials";
-            this.radioButtonDefaultCredentials.Size = new System.Drawing.Size(178, 17);
-            this.radioButtonDefaultCredentials.TabIndex = 14;
-            this.radioButtonDefaultCredentials.TabStop = true;
-            this.radioButtonDefaultCredentials.Text = "Use logged on user\'s credentials";
-            this.radioButtonDefaultCredentials.UseVisualStyleBackColor = true;
-            this.radioButtonDefaultCredentials.CheckedChanged += new System.EventHandler(this.radioButtonDefaultCredentials_CheckedChanged);
-            // 
-            // labelPassword
-            // 
-            this.labelPassword.AutoSize = true;
-            this.labelPassword.Location = new System.Drawing.Point(234, 32);
-            this.labelPassword.Name = "labelPassword";
-            this.labelPassword.Size = new System.Drawing.Size(56, 13);
-            this.labelPassword.TabIndex = 19;
-            this.labelPassword.Text = "Password:";
-            // 
-            // textBoxUsername
-            // 
-            this.textBoxUsername.Enabled = false;
-            this.textBoxUsername.Location = new System.Drawing.Point(70, 29);
-            this.textBoxUsername.Name = "textBoxUsername";
-            this.textBoxUsername.Size = new System.Drawing.Size(154, 20);
-            this.textBoxUsername.TabIndex = 16;
-            // 
-            // textBoxPassword
-            // 
-            this.textBoxPassword.Enabled = false;
-            this.textBoxPassword.Location = new System.Drawing.Point(296, 29);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.Size = new System.Drawing.Size(154, 20);
-            this.textBoxPassword.TabIndex = 17;
-            this.textBoxPassword.UseSystemPasswordChar = true;
-            // 
-            // labelUsername
-            // 
-            this.labelUsername.AutoSize = true;
-            this.labelUsername.Location = new System.Drawing.Point(6, 32);
-            this.labelUsername.Name = "labelUsername";
-            this.labelUsername.Size = new System.Drawing.Size(58, 13);
-            this.labelUsername.TabIndex = 18;
-            this.labelUsername.Text = "Username:";
             // 
             // tabPagePowerShell
             // 
@@ -415,7 +308,7 @@
             this.tabPagePowerShell.Controls.Add(this.radioButtonUseLocalPowerShell);
             this.tabPagePowerShell.Location = new System.Drawing.Point(4, 22);
             this.tabPagePowerShell.Name = "tabPagePowerShell";
-            this.tabPagePowerShell.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePowerShell.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPagePowerShell.Size = new System.Drawing.Size(851, 61);
             this.tabPagePowerShell.TabIndex = 1;
             this.tabPagePowerShell.Text = "PowerShell";
@@ -535,16 +428,129 @@
             this.radioButtonUseLocalPowerShell.UseVisualStyleBackColor = true;
             this.radioButtonUseLocalPowerShell.CheckedChanged += new System.EventHandler(this.radioButtonUseLocalPowerShell_CheckedChanged);
             // 
+            // tabPageAuthv1
+            // 
+            this.tabPageAuthv1.Controls.Add(this.buttonChooseCertificate);
+            this.tabPageAuthv1.Controls.Add(this.textBoxAuthCertificate);
+            this.tabPageAuthv1.Controls.Add(this.radioButtonCertificateCredential);
+            this.tabPageAuthv1.Controls.Add(this.radioButtonSpecificCredentials);
+            this.tabPageAuthv1.Controls.Add(this.radioButtonDefaultCredentials);
+            this.tabPageAuthv1.Controls.Add(this.labelPassword);
+            this.tabPageAuthv1.Controls.Add(this.textBoxUsername);
+            this.tabPageAuthv1.Controls.Add(this.textBoxPassword);
+            this.tabPageAuthv1.Controls.Add(this.labelUsername);
+            this.tabPageAuthv1.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAuthv1.Name = "tabPageAuthv1";
+            this.tabPageAuthv1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageAuthv1.Size = new System.Drawing.Size(851, 61);
+            this.tabPageAuthv1.TabIndex = 0;
+            this.tabPageAuthv1.Text = "Authentication";
+            this.tabPageAuthv1.UseVisualStyleBackColor = true;
+            // 
+            // buttonChooseCertificate
+            // 
+            this.buttonChooseCertificate.Location = new System.Drawing.Point(773, 29);
+            this.buttonChooseCertificate.Name = "buttonChooseCertificate";
+            this.buttonChooseCertificate.Size = new System.Drawing.Size(75, 20);
+            this.buttonChooseCertificate.TabIndex = 28;
+            this.buttonChooseCertificate.Text = "Choose...";
+            this.buttonChooseCertificate.UseVisualStyleBackColor = true;
+            this.buttonChooseCertificate.Click += new System.EventHandler(this.buttonChooseCertificate_Click);
+            // 
+            // textBoxAuthCertificate
+            // 
+            this.textBoxAuthCertificate.Location = new System.Drawing.Point(456, 29);
+            this.textBoxAuthCertificate.Name = "textBoxAuthCertificate";
+            this.textBoxAuthCertificate.ReadOnly = true;
+            this.textBoxAuthCertificate.Size = new System.Drawing.Size(317, 20);
+            this.textBoxAuthCertificate.TabIndex = 27;
+            // 
+            // radioButtonCertificateCredential
+            // 
+            this.radioButtonCertificateCredential.AutoSize = true;
+            this.radioButtonCertificateCredential.Location = new System.Drawing.Point(345, 6);
+            this.radioButtonCertificateCredential.Name = "radioButtonCertificateCredential";
+            this.radioButtonCertificateCredential.Size = new System.Drawing.Size(163, 17);
+            this.radioButtonCertificateCredential.TabIndex = 20;
+            this.radioButtonCertificateCredential.TabStop = true;
+            this.radioButtonCertificateCredential.Text = "Use certificate authentication";
+            this.radioButtonCertificateCredential.UseVisualStyleBackColor = true;
+            this.radioButtonCertificateCredential.CheckedChanged += new System.EventHandler(this.radioButtonCertificateCredential_CheckedChanged);
+            // 
+            // radioButtonSpecificCredentials
+            // 
+            this.radioButtonSpecificCredentials.AutoSize = true;
+            this.radioButtonSpecificCredentials.Location = new System.Drawing.Point(193, 6);
+            this.radioButtonSpecificCredentials.Name = "radioButtonSpecificCredentials";
+            this.radioButtonSpecificCredentials.Size = new System.Drawing.Size(146, 17);
+            this.radioButtonSpecificCredentials.TabIndex = 15;
+            this.radioButtonSpecificCredentials.Text = "Use specified credentials:";
+            this.radioButtonSpecificCredentials.UseVisualStyleBackColor = true;
+            this.radioButtonSpecificCredentials.CheckedChanged += new System.EventHandler(this.radioButtonSpecificCredentials_CheckedChanged);
+            // 
+            // radioButtonDefaultCredentials
+            // 
+            this.radioButtonDefaultCredentials.AutoSize = true;
+            this.radioButtonDefaultCredentials.Checked = true;
+            this.radioButtonDefaultCredentials.Location = new System.Drawing.Point(6, 6);
+            this.radioButtonDefaultCredentials.Name = "radioButtonDefaultCredentials";
+            this.radioButtonDefaultCredentials.Size = new System.Drawing.Size(178, 17);
+            this.radioButtonDefaultCredentials.TabIndex = 14;
+            this.radioButtonDefaultCredentials.TabStop = true;
+            this.radioButtonDefaultCredentials.Text = "Use logged on user\'s credentials";
+            this.radioButtonDefaultCredentials.UseVisualStyleBackColor = true;
+            this.radioButtonDefaultCredentials.CheckedChanged += new System.EventHandler(this.radioButtonDefaultCredentials_CheckedChanged);
+            // 
+            // labelPassword
+            // 
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Location = new System.Drawing.Point(234, 32);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(56, 13);
+            this.labelPassword.TabIndex = 19;
+            this.labelPassword.Text = "Password:";
+            // 
+            // textBoxUsername
+            // 
+            this.textBoxUsername.Enabled = false;
+            this.textBoxUsername.Location = new System.Drawing.Point(70, 29);
+            this.textBoxUsername.Name = "textBoxUsername";
+            this.textBoxUsername.Size = new System.Drawing.Size(154, 20);
+            this.textBoxUsername.TabIndex = 16;
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword.Enabled = false;
+            this.textBoxPassword.Location = new System.Drawing.Point(296, 29);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.Size = new System.Drawing.Size(154, 20);
+            this.textBoxPassword.TabIndex = 17;
+            this.textBoxPassword.UseSystemPasswordChar = true;
+            // 
+            // labelUsername
+            // 
+            this.labelUsername.AutoSize = true;
+            this.labelUsername.Location = new System.Drawing.Point(6, 32);
+            this.labelUsername.Name = "labelUsername";
+            this.labelUsername.Size = new System.Drawing.Size(58, 13);
+            this.labelUsername.TabIndex = 18;
+            this.labelUsername.Text = "Username:";
+            // 
+            // timerTaskMonitor
+            // 
+            this.timerTaskMonitor.Interval = 1000;
+            this.timerTaskMonitor.Tick += new System.EventHandler(this.timerTaskMonitor_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(883, 529);
+            this.ClientSize = new System.Drawing.Size(881, 549);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox2);
-            this.MinimumSize = new System.Drawing.Size(899, 568);
+            this.MinimumSize = new System.Drawing.Size(897, 562);
             this.Name = "FormMain";
             this.Text = "Exchange PowerShell Automation Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
@@ -560,10 +566,10 @@
             this.tabPageVerbose.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
-            this.tabPageAuthentication.ResumeLayout(false);
-            this.tabPageAuthentication.PerformLayout();
             this.tabPagePowerShell.ResumeLayout(false);
             this.tabPagePowerShell.PerformLayout();
+            this.tabPageAuthv1.ResumeLayout(false);
+            this.tabPageAuthv1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -588,7 +594,7 @@
         private System.Windows.Forms.TabPage tabPageOptions;
         private System.Windows.Forms.Button buttonClearLogs;
         private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tabPageAuthentication;
+        private System.Windows.Forms.TabPage tabPageAuthv1;
         private System.Windows.Forms.RadioButton radioButtonSpecificCredentials;
         private System.Windows.Forms.RadioButton radioButtonDefaultCredentials;
         private System.Windows.Forms.Label labelPassword;
@@ -609,6 +615,7 @@
         private System.Windows.Forms.TextBox textBoxAuthCertificate;
         private System.Windows.Forms.CheckBox checkBoxOffice365;
         private System.Windows.Forms.CheckBox checkBoxEXOv2;
+        private System.Windows.Forms.Timer timerTaskMonitor;
     }
 }
 
