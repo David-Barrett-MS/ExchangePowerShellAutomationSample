@@ -81,10 +81,46 @@ namespace ExchangePSAutomationTest
         {
             textBoxUsername.Enabled = radioButtonSpecificCredentials.Checked;
             textBoxPassword.Enabled = radioButtonSpecificCredentials.Checked;
-            labelPassword.Enabled = radioButtonSpecificCredentials.Checked;
-            labelUsername.Enabled = radioButtonSpecificCredentials.Checked;
             textBoxAuthCertificate.Enabled = radioButtonCertificateCredential.Checked;
             buttonChooseCertificate.Enabled = radioButtonCertificateCredential.Checked;
+            if (checkBoxEXOv2.Checked)
+            {
+                //radioButtonUseLocalPowerShell.Checked = true;
+                if (radioButtonDefaultCredentials.Checked)
+                    radioButtonSpecificCredentials.Checked = true;
+                if (radioButtonCertificateCredential.Checked)
+                {
+                    labelUsername.Text = "AppID:";
+                    labelPassword.Text = "Organization:";
+                    labelPassword.Visible = true;
+                    textBoxPassword.Visible = true;
+                }
+                else
+                {
+                    labelUsername.Text = "Username:";
+                    labelPassword.Text = "Password:";
+                    labelPassword.Visible = false;
+                    textBoxPassword.Visible = false;
+                }
+                textBoxPassword.UseSystemPasswordChar = false;
+                textBoxPassword.Enabled = radioButtonCertificateCredential.Checked;
+                textBoxUsername.Enabled = radioButtonCertificateCredential.Checked || radioButtonSpecificCredentials.Checked;
+            }
+            else
+            {
+                labelUsername.Text = "Username:";
+                labelPassword.Text = "Password:";
+                labelPassword.Visible = true;
+                textBoxPassword.Visible = true;
+                labelPassword.Enabled = radioButtonSpecificCredentials.Checked;
+                labelUsername.Enabled = radioButtonSpecificCredentials.Checked;
+                textBoxPassword.UseSystemPasswordChar = true;
+            }
+
+            radioButtonDefaultCredentials.Enabled = !checkBoxEXOv2.Checked;
+
+            // As the auth state has changed, we ensure any existing runspace is closed so that
+            // new auth settings will be applied
             CloseRunspace();
         }
 
@@ -105,6 +141,12 @@ namespace ExchangePSAutomationTest
             return propInfo.ToString();
         }
 
+        /// <summary>
+        /// Add the given data to the end of the text in the specified TextBox.
+        /// Defaults to textBoxOutput if none specified.
+        /// </summary>
+        /// <param name="data">The string data to append.</param>
+        /// <param name="targetTextBox">The textbox to which to append the data.</param>
         private void LogOutput(string data, TextBox targetTextBox = null)
         {
             if (targetTextBox == null)
@@ -240,7 +282,7 @@ namespace ExchangePSAutomationTest
         }
 
         /// <summary>
-        /// Return the currently select authentication mechanism
+        /// Return the currently selected authentication mechanism
         /// </summary>
         private AuthenticationMechanism AuthMethod()
         {
@@ -284,7 +326,7 @@ namespace ExchangePSAutomationTest
                 if (checkBoxEXOv2.Checked)
                 {
                     if (!String.IsNullOrEmpty(textBoxUsername.Text))
-                        command.AddParameter("UserPrincipalName", textBoxUsername.Text);                    
+                        command.AddParameter("UserPrincipalName", textBoxUsername.Text);
                 }
                 else
                     command.AddParameter("Credential", ExchangeCredentials());
@@ -292,9 +334,15 @@ namespace ExchangePSAutomationTest
             else if (radioButtonCertificateCredential.Checked)
             {
                 if (checkBoxEXOv2.Checked)
+                {
+                    // Certificate auth for EXO also require AppId and Organisation Id
+                    // e.g. Connect-ExchangeOnline -Certificate [Cert] -AppID [AppId] -Organization [OrganisationId]
                     command.AddParameter("Certificate", _authCertificate);
-                else
-                    command.AddParameter("CertificateThumbprint", _authCertificate.Thumbprint);
+                    command.AddParameter("AppID", textBoxUsername.Text);
+                    command.AddParameter("Organization", textBoxPassword.Text);
+                }
+            else
+                command.AddParameter("CertificateThumbprint", _authCertificate.Thumbprint);
             }
         }
 
@@ -679,17 +727,7 @@ namespace ExchangePSAutomationTest
 
         private void checkBoxEXOv2_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxEXOv2.Checked)
-            {
-                radioButtonUseLocalPowerShell.Checked = true;
-                if (radioButtonDefaultCredentials.Checked)
-                    radioButtonSpecificCredentials.Checked = true;
-
-            }
-
-            textBoxPassword.Visible = !checkBoxEXOv2.Checked;
-            labelPassword.Visible = !checkBoxEXOv2.Checked;
-            radioButtonDefaultCredentials.Enabled = !checkBoxEXOv2.Checked;
+            UpdateAuthState();
         }
 
         private void radioButtonCertificateCredential_CheckedChanged(object sender, EventArgs e)

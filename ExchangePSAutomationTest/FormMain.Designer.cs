@@ -203,7 +203,7 @@
             this.tabPageOutput.Controls.Add(this.textBoxOutput);
             this.tabPageOutput.Location = new System.Drawing.Point(4, 22);
             this.tabPageOutput.Name = "tabPageOutput";
-            this.tabPageOutput.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageOutput.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageOutput.Size = new System.Drawing.Size(850, 195);
             this.tabPageOutput.TabIndex = 0;
             this.tabPageOutput.Text = "Output";
@@ -225,8 +225,8 @@
             this.tabPageErrors.Controls.Add(this.textBoxErrors);
             this.tabPageErrors.Location = new System.Drawing.Point(4, 22);
             this.tabPageErrors.Name = "tabPageErrors";
-            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPageErrors.Size = new System.Drawing.Size(852, 175);
+            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageErrors.Size = new System.Drawing.Size(850, 195);
             this.tabPageErrors.TabIndex = 1;
             this.tabPageErrors.Text = "Errors";
             this.tabPageErrors.UseVisualStyleBackColor = true;
@@ -239,7 +239,7 @@
             this.textBoxErrors.Name = "textBoxErrors";
             this.textBoxErrors.ReadOnly = true;
             this.textBoxErrors.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxErrors.Size = new System.Drawing.Size(846, 169);
+            this.textBoxErrors.Size = new System.Drawing.Size(844, 189);
             this.textBoxErrors.TabIndex = 1;
             // 
             // tabPageVerbose
@@ -247,7 +247,7 @@
             this.tabPageVerbose.Controls.Add(this.textBoxVerbose);
             this.tabPageVerbose.Location = new System.Drawing.Point(4, 22);
             this.tabPageVerbose.Name = "tabPageVerbose";
-            this.tabPageVerbose.Size = new System.Drawing.Size(852, 175);
+            this.tabPageVerbose.Size = new System.Drawing.Size(850, 195);
             this.tabPageVerbose.TabIndex = 2;
             this.tabPageVerbose.Text = "Verbose";
             this.tabPageVerbose.UseVisualStyleBackColor = true;
@@ -260,7 +260,7 @@
             this.textBoxVerbose.Name = "textBoxVerbose";
             this.textBoxVerbose.ReadOnly = true;
             this.textBoxVerbose.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxVerbose.Size = new System.Drawing.Size(852, 175);
+            this.textBoxVerbose.Size = new System.Drawing.Size(850, 195);
             this.textBoxVerbose.TabIndex = 1;
             // 
             // tabPageOptions
@@ -268,7 +268,7 @@
             this.tabPageOptions.Controls.Add(this.buttonClearLogs);
             this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
             this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Size = new System.Drawing.Size(852, 175);
+            this.tabPageOptions.Size = new System.Drawing.Size(850, 195);
             this.tabPageOptions.TabIndex = 3;
             this.tabPageOptions.Text = "Options";
             this.tabPageOptions.UseVisualStyleBackColor = true;
@@ -308,7 +308,7 @@
             this.tabPagePowerShell.Controls.Add(this.radioButtonUseLocalPowerShell);
             this.tabPagePowerShell.Location = new System.Drawing.Point(4, 22);
             this.tabPagePowerShell.Name = "tabPagePowerShell";
-            this.tabPagePowerShell.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPagePowerShell.Padding = new System.Windows.Forms.Padding(3);
             this.tabPagePowerShell.Size = new System.Drawing.Size(851, 61);
             this.tabPagePowerShell.TabIndex = 1;
             this.tabPagePowerShell.Text = "PowerShell";
@@ -441,7 +441,7 @@
             this.tabPageAuthv1.Controls.Add(this.labelUsername);
             this.tabPageAuthv1.Location = new System.Drawing.Point(4, 22);
             this.tabPageAuthv1.Name = "tabPageAuthv1";
-            this.tabPageAuthv1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageAuthv1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAuthv1.Size = new System.Drawing.Size(851, 61);
             this.tabPageAuthv1.TabIndex = 0;
             this.tabPageAuthv1.Text = "Authentication";
@@ -504,7 +504,7 @@
             // labelPassword
             // 
             this.labelPassword.AutoSize = true;
-            this.labelPassword.Location = new System.Drawing.Point(234, 32);
+            this.labelPassword.Location = new System.Drawing.Point(230, 32);
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(56, 13);
             this.labelPassword.TabIndex = 19;
