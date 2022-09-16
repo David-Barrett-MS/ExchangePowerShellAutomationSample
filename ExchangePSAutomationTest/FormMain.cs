@@ -94,6 +94,17 @@ namespace ExchangePSAutomationTest
                     labelPassword.Text = "Organization:";
                     labelPassword.Visible = true;
                     textBoxPassword.Visible = true;
+                    checkBoxUseCertificateThumprint.Enabled = true;
+                    if (checkBoxUseCertificateThumprint.Checked)
+                    {
+                        buttonChooseCertificate.Visible = false;
+                        textBoxAuthCertificate.ReadOnly = false;
+                    }
+                    else
+                    {
+                        buttonChooseCertificate.Visible = true;
+                        textBoxAuthCertificate.ReadOnly = true;
+                    }
                 }
                 else
                 {
@@ -101,6 +112,7 @@ namespace ExchangePSAutomationTest
                     labelPassword.Text = "Password:";
                     labelPassword.Visible = false;
                     textBoxPassword.Visible = false;
+                    checkBoxUseCertificateThumprint.Enabled = false;
                 }
                 textBoxPassword.UseSystemPasswordChar = false;
                 textBoxPassword.Enabled = radioButtonCertificateCredential.Checked;
@@ -335,9 +347,13 @@ namespace ExchangePSAutomationTest
             {
                 if (checkBoxEXOv2.Checked)
                 {
-                    // Certificate auth for EXO also require AppId and Organisation Id
-                    // e.g. Connect-ExchangeOnline -Certificate [Cert] -AppID [AppId] -Organization [OrganisationId]
-                    command.AddParameter("Certificate", _authCertificate);
+                    // Certificate auth for EXO also require AppId and Organisation Id e.g.
+                    // Connect-ExchangeOnline -Certificate [Cert] -AppID [AppId] -Organization [OrganisationId]
+                    // Connect-ExchangeOnline -CertificateThumbprint [Thumbprint] -AppID [AppId] -Organization [OrganisationId]
+                    if (checkBoxUseCertificateThumprint.Checked)
+                        command.AddParameter("CertificateThumbprint", textBoxAuthCertificate.Text);
+                    else
+                        command.AddParameter("Certificate", _authCertificate);
                     command.AddParameter("AppID", textBoxUsername.Text);
                     command.AddParameter("Organization", textBoxPassword.Text);
                 }
@@ -750,6 +766,11 @@ namespace ExchangePSAutomationTest
             _scriptRunnerTask = null;
 
             buttonRunPowerShell.Enabled = true;
+        }
+
+        private void checkBoxUseCertificateThumprint_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAuthState();
         }
     }
 }

@@ -81,16 +81,17 @@ namespace ExchangePSAutomationTest
             try
             {
                 byte[] rawData = Certificate.RawData;
-                listBoxCertificateInfo.Items.Add(String.Format("Content type: {0}", X509Certificate2.GetCertContentType(rawData)));
-                listBoxCertificateInfo.Items.Add(String.Format("Friendly name: {0}", _certificate.FriendlyName));
-                listBoxCertificateInfo.Items.Add(String.Format("Subject: {0}", _certificate.Subject));
-                listBoxCertificateInfo.Items.Add(String.Format("Verified: {0}", _certificate.Verify()));
-                listBoxCertificateInfo.Items.Add(String.Format("Simple name: {0}", _certificate.GetNameInfo(X509NameType.SimpleName, true)));
-                listBoxCertificateInfo.Items.Add(String.Format("Signature algorithm: {0}", _certificate.SignatureAlgorithm.FriendlyName));
+                listBoxCertificateInfo.Items.Add($"Content type: {X509Certificate2.GetCertContentType(rawData)}");
+                listBoxCertificateInfo.Items.Add($"Friendly name: {_certificate.FriendlyName}");
+                listBoxCertificateInfo.Items.Add($"Thumbprint: {_certificate.Thumbprint}");
+                listBoxCertificateInfo.Items.Add($"Subject: {_certificate.Subject}");
+                listBoxCertificateInfo.Items.Add($"Verified: {_certificate.Verify()}");
+                listBoxCertificateInfo.Items.Add($"Simple name: {_certificate.GetNameInfo(X509NameType.SimpleName, true)}");
+                listBoxCertificateInfo.Items.Add($"Signature algorithm: {_certificate.SignatureAlgorithm.FriendlyName}");
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Unable to read certificate: {0}{1}", Environment.NewLine, ex.Message), "Certificate Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Unable to read certificate: {Environment.NewLine}{ex.Message}", "Certificate Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             buttonOK.Enabled = (_certificate != null);
         }
@@ -99,7 +100,7 @@ namespace ExchangePSAutomationTest
         {
             if (_certificate == null)
             {
-                System.Windows.Forms.MessageBox.Show("Please select a certificate", "No certificate chosen", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select a certificate", "No certificate chosen", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             this.Dispose();
@@ -141,13 +142,13 @@ namespace ExchangePSAutomationTest
                     }
                     catch (Exception ex2)
                     {
-                        System.Windows.Forms.MessageBox.Show(String.Format("Unable to load certificate: {0}{1}", Environment.NewLine, ex2.Message), "Load failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Unable to load certificate: {Environment.NewLine}{ex2.Message}", "Load failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         _certificate = null;
                     }
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show(String.Format("Unable to load certificate: {0}{1}", Environment.NewLine, ex.Message), "Load failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Unable to load certificate: {Environment.NewLine}{ex.Message}", "Load failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _certificate = null;
                 }
             }
