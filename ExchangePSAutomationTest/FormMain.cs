@@ -190,6 +190,11 @@ namespace ExchangePSAutomationTest
             {
                 result = powershell.Invoke<object>();
             }
+            catch (CommandNotFoundException ex)
+            {
+                // This error occurs if the Exchange Online Management module was not loaded
+                LogError(ex.Message);
+            }
             catch (Exception ex)
             {
                 LogError(ex.Message);
@@ -402,19 +407,22 @@ namespace ExchangePSAutomationTest
         {
             try
             {
-                // Create and open the local PowerShell runspace
-                _exchangeRunspace = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace();
+                // Set the initial session state
+                InitialSessionState sessionState = InitialSessionState.CreateDefault();
+                if (checkBoxOffice365.Checked && checkBoxEXOv2.Checked)
+                    sessionState.ImportPSModule(new string[] { "ExchangeOnlineManagement" });
+
+                // Create the runspace
+                _exchangeRunspace = RunspaceFactory.CreateRunspace(sessionState);
                 _exchangeRunspace.Open();
 
                 PowerShell powershell = PowerShell.Create();
-                InitialSessionState sessionState = InitialSessionState.CreateDefault();
                 powershell.Runspace = _exchangeRunspace;
 
 
                 if (checkBoxOffice365.Checked && checkBoxEXOv2.Checked)
                 {
-                    // Connect to EXO v2
-                    sessionState.ImportPSModule(new string[] { "ExchangeOnlineManagement" });
+                    // Connect to EXO v2                    
                     powershell.Commands = ConnectExchangeOnline();
                     InvokeAndReport(powershell);
                 }

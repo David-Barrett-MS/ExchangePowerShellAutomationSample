@@ -60,6 +60,7 @@
             this.radioButtonUseRemotePowerShell = new System.Windows.Forms.RadioButton();
             this.radioButtonUseLocalPowerShell = new System.Windows.Forms.RadioButton();
             this.tabPageAuthv1 = new System.Windows.Forms.TabPage();
+            this.checkBoxUseCertificateThumprint = new System.Windows.Forms.CheckBox();
             this.buttonChooseCertificate = new System.Windows.Forms.Button();
             this.textBoxAuthCertificate = new System.Windows.Forms.TextBox();
             this.radioButtonCertificateCredential = new System.Windows.Forms.RadioButton();
@@ -70,7 +71,6 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelUsername = new System.Windows.Forms.Label();
             this.timerTaskMonitor = new System.Windows.Forms.Timer(this.components);
-            this.checkBoxUseCertificateThumprint = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -124,7 +124,7 @@
             // 
             this.checkBoxProcessAsCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxProcessAsCommand.AutoSize = true;
-            this.checkBoxProcessAsCommand.Location = new System.Drawing.Point(2, 179);
+            this.checkBoxProcessAsCommand.Location = new System.Drawing.Point(3, 179);
             this.checkBoxProcessAsCommand.Name = "checkBoxProcessAsCommand";
             this.checkBoxProcessAsCommand.Size = new System.Drawing.Size(217, 17);
             this.checkBoxProcessAsCommand.TabIndex = 5;
@@ -322,9 +322,9 @@
             this.checkBoxEXOv2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxEXOv2.Location = new System.Drawing.Point(495, 9);
             this.checkBoxEXOv2.Name = "checkBoxEXOv2";
-            this.checkBoxEXOv2.Size = new System.Drawing.Size(38, 17);
+            this.checkBoxEXOv2.Size = new System.Drawing.Size(44, 17);
             this.checkBoxEXOv2.TabIndex = 17;
-            this.checkBoxEXOv2.Text = "v2";
+            this.checkBoxEXOv2.Text = "v2+";
             this.checkBoxEXOv2.UseVisualStyleBackColor = true;
             this.checkBoxEXOv2.CheckedChanged += new System.EventHandler(this.checkBoxEXOv2_CheckedChanged);
             // 
@@ -449,6 +449,17 @@
             this.tabPageAuthv1.Text = "Authentication";
             this.tabPageAuthv1.UseVisualStyleBackColor = true;
             // 
+            // checkBoxUseCertificateThumprint
+            // 
+            this.checkBoxUseCertificateThumprint.AutoSize = true;
+            this.checkBoxUseCertificateThumprint.Location = new System.Drawing.Point(494, 6);
+            this.checkBoxUseCertificateThumprint.Name = "checkBoxUseCertificateThumprint";
+            this.checkBoxUseCertificateThumprint.Size = new System.Drawing.Size(244, 17);
+            this.checkBoxUseCertificateThumprint.TabIndex = 29;
+            this.checkBoxUseCertificateThumprint.Text = "Specify certificate using -Thumprint parameter:";
+            this.checkBoxUseCertificateThumprint.UseVisualStyleBackColor = true;
+            this.checkBoxUseCertificateThumprint.CheckedChanged += new System.EventHandler(this.checkBoxUseCertificateThumprint_CheckedChanged);
+            // 
             // buttonChooseCertificate
             // 
             this.buttonChooseCertificate.Location = new System.Drawing.Point(773, 29);
@@ -543,17 +554,6 @@
             this.timerTaskMonitor.Interval = 1000;
             this.timerTaskMonitor.Tick += new System.EventHandler(this.timerTaskMonitor_Tick);
             // 
-            // checkBoxUseCertificateThumprint
-            // 
-            this.checkBoxUseCertificateThumprint.AutoSize = true;
-            this.checkBoxUseCertificateThumprint.Location = new System.Drawing.Point(494, 6);
-            this.checkBoxUseCertificateThumprint.Name = "checkBoxUseCertificateThumprint";
-            this.checkBoxUseCertificateThumprint.Size = new System.Drawing.Size(244, 17);
-            this.checkBoxUseCertificateThumprint.TabIndex = 29;
-            this.checkBoxUseCertificateThumprint.Text = "Specify certificate using -Thumprint parameter:";
-            this.checkBoxUseCertificateThumprint.UseVisualStyleBackColor = true;
-            this.checkBoxUseCertificateThumprint.CheckedChanged += new System.EventHandler(this.checkBoxUseCertificateThumprint_CheckedChanged);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -563,7 +563,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox2);
-            this.MinimumSize = new System.Drawing.Size(895, 556);
+            this.MinimumSize = new System.Drawing.Size(893, 550);
             this.Name = "FormMain";
             this.Text = "Exchange PowerShell Automation Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
