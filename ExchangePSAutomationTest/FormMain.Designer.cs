@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.textBoxPowerShell = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonRunPowerShell = new System.Windows.Forms.Button();
@@ -61,7 +60,6 @@
             this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelUsername = new System.Windows.Forms.Label();
-            this.timerTaskMonitor = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -451,11 +449,6 @@
             this.labelUsername.TabIndex = 18;
             this.labelUsername.Text = "Username:";
             // 
-            // timerTaskMonitor
-            // 
-            this.timerTaskMonitor.Interval = 1000;
-            this.timerTaskMonitor.Tick += new System.EventHandler(this.timerTaskMonitor_Tick);
-            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -643,7 +636,6 @@
         private System.Windows.Forms.TextBox textBoxAuthCertificate;
         private System.Windows.Forms.CheckBox checkBoxOffice365;
         private System.Windows.Forms.CheckBox checkBoxEXOv2;
-        private System.Windows.Forms.Timer timerTaskMonitor;
         private System.Windows.Forms.CheckBox checkBoxUseCertificateThumprint;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox textBoxStatus;

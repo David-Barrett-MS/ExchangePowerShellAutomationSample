@@ -36,6 +36,7 @@ namespace ExchangePSAutomationTest
         private X509Certificate2 _authCertificate = null;
         private Task _scriptRunnerTask = null;
         private DateTime _scriptRunStart = DateTime.MinValue;
+        private DateTime _scriptRunEnd = DateTime.MinValue;
         static bool _ignoreSSLErrors = false;
         static bool _confirmIgnoreSSLErrors = true;
 
@@ -160,7 +161,7 @@ namespace ExchangePSAutomationTest
         /// </summary>
         /// <param name="data">The string data to append.</param>
         /// <param name="targetTextBox">The textbox to which to append the data.</param>
-        private void LogOutput(string data, TextBox targetTextBox = null)
+        private void LogOutput(string data, TextBox targetTextBox = null, bool scrollToBottom = false)
         {
             if (targetTextBox == null)
                 targetTextBox = textBoxOutput;
@@ -168,8 +169,11 @@ namespace ExchangePSAutomationTest
             Action action = new Action(() =>
             {
                 targetTextBox.Text += data;
-                targetTextBox.SelectionStart = targetTextBox.Text.Length;
-                targetTextBox.ScrollToCaret();
+                if (scrollToBottom)
+                {
+                    targetTextBox.SelectionStart = targetTextBox.Text.Length;
+                    targetTextBox.ScrollToCaret();
+                }
             });
 
             if (targetTextBox.InvokeRequired)
@@ -220,18 +224,22 @@ namespace ExchangePSAutomationTest
             {
                 LogError(ex.Message);
             }
+            _scriptRunEnd = DateTime.Now;
 
             try
             {
+                SetStatus("Parsing error records");
                 foreach (ErrorRecord record in powershell.Streams.Error)
                     LogError(record.Exception.ToString());
 
+                SetStatus("Parsing verbose records");
                 foreach (VerboseRecord record in powershell.Streams.Verbose)
                 {
                     LogOutput($"{record.Message}{Environment.NewLine}", textBoxVerbose);
                     _verboseLog.Log(record.Message.ToString());
                 }
 
+                SetStatus("Parsing information records");
                 foreach (InformationRecord record in powershell.Streams.Information)
                 {
                     LogOutput($"{record.MessageData}{Environment.NewLine}", textBoxVerbose);
@@ -722,10 +730,12 @@ namespace ExchangePSAutomationTest
             {
                 _scriptRunnerTask = new Task(new Action(() => { ProcessScript(); }));
                 _scriptRunnerTask.Start();
+                _scriptRunnerTask.GetAwaiter().OnCompleted(() => { ScriptTaskComplete(); });
             }
+            else
+                buttonRunPowerShell.Enabled = true;
 
             this.Cursor = cursor;
-            timerTaskMonitor.Start();
         }
 
         private void radioButtonUseLocalPowerShell_CheckedChanged(object sender, EventArgs e)
@@ -809,18 +819,15 @@ namespace ExchangePSAutomationTest
 
         #endregion
 
-        private void timerTaskMonitor_Tick(object sender, EventArgs e)
+        private void ScriptTaskComplete()
         {
-            if (_scriptRunnerTask != null && _scriptRunnerTask.Status == TaskStatus.Running)
-                return;
-
-            timerTaskMonitor.Stop();
-            LogOutput($"{Environment.NewLine}Script completed in {DateTime.Now.Subtract(_scriptRunStart)}{Environment.NewLine}");
+            LogOutput($"{Environment.NewLine}Script completed in {_scriptRunEnd.Subtract(_scriptRunStart)}{Environment.NewLine}");
+            LogOutput($"Results processing completed in {DateTime.Now.Subtract(_scriptRunEnd)}{Environment.NewLine}", null, true);
             _scriptRunStart = DateTime.MinValue;
+            _scriptRunEnd = DateTime.MinValue;
 
             _scriptRunnerTask.Dispose();
             _scriptRunnerTask = null;
-
             buttonRunPowerShell.Enabled = true;
         }
 
