@@ -63,6 +63,7 @@
             this.labelUsername = new System.Windows.Forms.Label();
             this.timerTaskMonitor = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageOutput = new System.Windows.Forms.TabPage();
             this.textBoxOutput = new System.Windows.Forms.TextBox();
@@ -72,7 +73,6 @@
             this.textBoxVerbose = new System.Windows.Forms.TextBox();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.buttonClearLogs = new System.Windows.Forms.Button();
-            this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -468,6 +468,16 @@
             this.panel1.Size = new System.Drawing.Size(859, 221);
             this.panel1.TabIndex = 14;
             // 
+            // textBoxStatus
+            // 
+            this.textBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxStatus.Location = new System.Drawing.Point(198, 1);
+            this.textBoxStatus.Name = "textBoxStatus";
+            this.textBoxStatus.ReadOnly = true;
+            this.textBoxStatus.Size = new System.Drawing.Size(659, 20);
+            this.textBoxStatus.TabIndex = 14;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageOutput);
@@ -509,7 +519,7 @@
             this.tabPageErrors.Location = new System.Drawing.Point(4, 22);
             this.tabPageErrors.Name = "tabPageErrors";
             this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageErrors.Size = new System.Drawing.Size(424, 195);
+            this.tabPageErrors.Size = new System.Drawing.Size(851, 195);
             this.tabPageErrors.TabIndex = 1;
             this.tabPageErrors.Text = "Errors";
             this.tabPageErrors.UseVisualStyleBackColor = true;
@@ -522,7 +532,7 @@
             this.textBoxErrors.Name = "textBoxErrors";
             this.textBoxErrors.ReadOnly = true;
             this.textBoxErrors.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxErrors.Size = new System.Drawing.Size(418, 189);
+            this.textBoxErrors.Size = new System.Drawing.Size(845, 189);
             this.textBoxErrors.TabIndex = 1;
             // 
             // tabPageVerbose
@@ -530,7 +540,7 @@
             this.tabPageVerbose.Controls.Add(this.textBoxVerbose);
             this.tabPageVerbose.Location = new System.Drawing.Point(4, 22);
             this.tabPageVerbose.Name = "tabPageVerbose";
-            this.tabPageVerbose.Size = new System.Drawing.Size(424, 195);
+            this.tabPageVerbose.Size = new System.Drawing.Size(851, 195);
             this.tabPageVerbose.TabIndex = 2;
             this.tabPageVerbose.Text = "Verbose";
             this.tabPageVerbose.UseVisualStyleBackColor = true;
@@ -543,7 +553,7 @@
             this.textBoxVerbose.Name = "textBoxVerbose";
             this.textBoxVerbose.ReadOnly = true;
             this.textBoxVerbose.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxVerbose.Size = new System.Drawing.Size(424, 195);
+            this.textBoxVerbose.Size = new System.Drawing.Size(851, 195);
             this.textBoxVerbose.TabIndex = 1;
             // 
             // tabPageOptions
@@ -564,16 +574,7 @@
             this.buttonClearLogs.TabIndex = 14;
             this.buttonClearLogs.Text = "Clear log windows";
             this.buttonClearLogs.UseVisualStyleBackColor = true;
-            // 
-            // textBoxStatus
-            // 
-            this.textBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxStatus.Location = new System.Drawing.Point(198, 1);
-            this.textBoxStatus.Name = "textBoxStatus";
-            this.textBoxStatus.ReadOnly = true;
-            this.textBoxStatus.Size = new System.Drawing.Size(659, 20);
-            this.textBoxStatus.TabIndex = 14;
+            this.buttonClearLogs.Click += new System.EventHandler(this.buttonClearLogs_Click);
             // 
             // FormMain
             // 

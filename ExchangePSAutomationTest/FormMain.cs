@@ -203,13 +203,13 @@ namespace ExchangePSAutomationTest
         /// </summary>
         /// <param name="powershell">PowerShell object to invoke</param>
         /// <param name="ErrorsOnly">If true, only errors and output will be displayed (default is false)</param>
-        Collection<object> InvokeAndReport(PowerShell powershell, bool ErrorsOnly = false)
+        Collection<PSObject> InvokeAndReport(PowerShell powershell, bool ErrorsOnly = false)
         {
-            Collection<object> result = null;
+            Collection<PSObject> result = null;
             _scriptRunStart = DateTime.Now;
             try
             {
-                result = powershell.Invoke<object>();
+                result = powershell.Invoke();
             }
             catch (CommandNotFoundException ex)
             {
@@ -232,6 +232,12 @@ namespace ExchangePSAutomationTest
                     _verboseLog.Log(record.Message.ToString());
                 }
 
+                foreach (InformationRecord record in powershell.Streams.Information)
+                {
+                    LogOutput($"{record.MessageData}{Environment.NewLine}", textBoxVerbose);
+                    _verboseLog.Log(record.MessageData.ToString());
+                }
+
                 if (!ErrorsOnly)
                 {
                     if (result != null)
@@ -240,11 +246,19 @@ namespace ExchangePSAutomationTest
                         StringBuilder propInfo = new StringBuilder();
                         foreach (PSObject obj in result)
                         {
-                            foreach (PSPropertyInfo psPropInfo in obj.Properties)
+                            string objType = obj.BaseObject.GetType().FullName;
+                            if (objType.StartsWith("System.") && !objType.StartsWith("System.Management"))
                             {
-                                propInfo.AppendLine($"{psPropInfo.Name}: {psPropInfo.Value}");
+                                propInfo.AppendLine(obj.ToString());
                             }
-                            propInfo.AppendLine();
+                            else
+                            {
+                                foreach (PSPropertyInfo psPropInfo in obj.Properties)
+                                {
+                                    propInfo.AppendLine($"{psPropInfo.Name}: {psPropInfo.Value}");
+                                }
+                                propInfo.AppendLine();
+                            }
                         }
                         LogOutput(propInfo.ToString());
                         _outputLog.Log(propInfo.ToString());
@@ -462,7 +476,7 @@ namespace ExchangePSAutomationTest
                     powershell.Commands = NewPSSession();
 
                     // Run the New-PSSession command in the local PowerShell runspace
-                    Collection<object> result = InvokeAndReport(powershell);
+                    Collection<PSObject> result = InvokeAndReport(powershell);
                     if (result.Count != 1)
                     {
                         _exchangeRunspace.Close();
@@ -814,5 +828,6 @@ namespace ExchangePSAutomationTest
         {
             UpdateAuthState();
         }
+
     }
 }

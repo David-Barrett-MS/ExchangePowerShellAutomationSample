@@ -20,6 +20,7 @@ namespace ExchangePSAutomationTest
     public partial class FormChooseAuthCertificate : Form
     {
         private X509Certificate2 _certificate = null;
+
         public FormChooseAuthCertificate()
         {
             InitializeComponent();
@@ -28,10 +29,11 @@ namespace ExchangePSAutomationTest
             UpdateUI();
         }
 
+        /// <summary>
+        /// Populate certificate combobox with any valid certificates found in user's personal store
+        /// </summary>
         private void PopulateCertificates()
         {
-            // Populate combobox with any valid certificates found in their store
-
             X509Store x509Store = null;
             comboBoxStoreCertificates.Items.Clear();
             try
@@ -57,11 +59,19 @@ namespace ExchangePSAutomationTest
             x509Store.Close();
         }
 
+        /// <summary>
+        /// Return the selected certificate
+        /// </summary>
         public X509Certificate2 Certificate
         {
             get { return _certificate; }
         }
 
+        /// <summary>
+        /// Handle selection of certificate
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void comboBoxStoreCertificates_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -72,6 +82,9 @@ namespace ExchangePSAutomationTest
             ShowCertificateInfo();
         }
 
+        /// <summary>
+        /// Display information about the selected certificate
+        /// </summary>
         private void ShowCertificateInfo()
         {
             listBoxCertificateInfo.Items.Clear();
@@ -96,6 +109,11 @@ namespace ExchangePSAutomationTest
             buttonOK.Enabled = (_certificate != null);
         }
 
+        /// <summary>
+        /// Handle OK button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonOK_Click(object sender, EventArgs e)
         {
             if (_certificate == null)
@@ -106,11 +124,21 @@ namespace ExchangePSAutomationTest
             this.Dispose();
         }
 
+        /// <summary>
+        /// Handle Cancel button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.Dispose();
         }
 
+        /// <summary>
+        /// Open certificate from file system (prompts user for certificate file to open)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonBrowseForCertificate_Click(object sender, EventArgs e)
         {
             OpenFileDialog oDialog = new OpenFileDialog();
@@ -154,6 +182,9 @@ namespace ExchangePSAutomationTest
             }
         }
 
+        /// <summary>
+        /// Update UI based on selected options
+        /// </summary>
         private void UpdateUI()
         {
             bool bSelectFromStoreEnabled = radioButtonSelectFromStore.Checked;
