@@ -38,15 +38,6 @@
             this.buttonRemoveCredential = new System.Windows.Forms.Button();
             this.buttonAddCredential = new System.Windows.Forms.Button();
             this.listBoxVariables = new System.Windows.Forms.ListBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPageOutput = new System.Windows.Forms.TabPage();
-            this.textBoxOutput = new System.Windows.Forms.TextBox();
-            this.tabPageErrors = new System.Windows.Forms.TabPage();
-            this.textBoxErrors = new System.Windows.Forms.TextBox();
-            this.tabPageVerbose = new System.Windows.Forms.TabPage();
-            this.textBoxVerbose = new System.Windows.Forms.TextBox();
-            this.tabPageOptions = new System.Windows.Forms.TabPage();
-            this.buttonClearLogs = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPagePowerShell = new System.Windows.Forms.TabPage();
             this.checkBoxEXOv2 = new System.Windows.Forms.CheckBox();
@@ -71,16 +62,28 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelUsername = new System.Windows.Forms.Label();
             this.timerTaskMonitor = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageOutput = new System.Windows.Forms.TabPage();
+            this.textBoxOutput = new System.Windows.Forms.TextBox();
+            this.tabPageErrors = new System.Windows.Forms.TabPage();
+            this.textBoxErrors = new System.Windows.Forms.TextBox();
+            this.tabPageVerbose = new System.Windows.Forms.TabPage();
+            this.textBoxVerbose = new System.Windows.Forms.TextBox();
+            this.tabPageOptions = new System.Windows.Forms.TabPage();
+            this.buttonClearLogs = new System.Windows.Forms.Button();
+            this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPagePowerShell.SuspendLayout();
+            this.tabPageAuthv1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageOutput.SuspendLayout();
             this.tabPageErrors.SuspendLayout();
             this.tabPageVerbose.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
-            this.tabControl2.SuspendLayout();
-            this.tabPagePowerShell.SuspendLayout();
-            this.tabPageAuthv1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxPowerShell
@@ -184,107 +187,6 @@
             this.listBoxVariables.Sorted = true;
             this.listBoxVariables.TabIndex = 0;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPageOutput);
-            this.tabControl1.Controls.Add(this.tabPageErrors);
-            this.tabControl1.Controls.Add(this.tabPageVerbose);
-            this.tabControl1.Controls.Add(this.tabPageOptions);
-            this.tabControl1.Location = new System.Drawing.Point(12, 315);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(858, 221);
-            this.tabControl1.TabIndex = 12;
-            // 
-            // tabPageOutput
-            // 
-            this.tabPageOutput.Controls.Add(this.textBoxOutput);
-            this.tabPageOutput.Location = new System.Drawing.Point(4, 22);
-            this.tabPageOutput.Name = "tabPageOutput";
-            this.tabPageOutput.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPageOutput.Size = new System.Drawing.Size(850, 195);
-            this.tabPageOutput.TabIndex = 0;
-            this.tabPageOutput.Text = "Output";
-            this.tabPageOutput.UseVisualStyleBackColor = true;
-            // 
-            // textBoxOutput
-            // 
-            this.textBoxOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxOutput.Location = new System.Drawing.Point(3, 3);
-            this.textBoxOutput.Multiline = true;
-            this.textBoxOutput.Name = "textBoxOutput";
-            this.textBoxOutput.ReadOnly = true;
-            this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOutput.Size = new System.Drawing.Size(844, 189);
-            this.textBoxOutput.TabIndex = 1;
-            // 
-            // tabPageErrors
-            // 
-            this.tabPageErrors.Controls.Add(this.textBoxErrors);
-            this.tabPageErrors.Location = new System.Drawing.Point(4, 22);
-            this.tabPageErrors.Name = "tabPageErrors";
-            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPageErrors.Size = new System.Drawing.Size(850, 195);
-            this.tabPageErrors.TabIndex = 1;
-            this.tabPageErrors.Text = "Errors";
-            this.tabPageErrors.UseVisualStyleBackColor = true;
-            // 
-            // textBoxErrors
-            // 
-            this.textBoxErrors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxErrors.Location = new System.Drawing.Point(3, 3);
-            this.textBoxErrors.Multiline = true;
-            this.textBoxErrors.Name = "textBoxErrors";
-            this.textBoxErrors.ReadOnly = true;
-            this.textBoxErrors.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxErrors.Size = new System.Drawing.Size(844, 189);
-            this.textBoxErrors.TabIndex = 1;
-            // 
-            // tabPageVerbose
-            // 
-            this.tabPageVerbose.Controls.Add(this.textBoxVerbose);
-            this.tabPageVerbose.Location = new System.Drawing.Point(4, 22);
-            this.tabPageVerbose.Name = "tabPageVerbose";
-            this.tabPageVerbose.Size = new System.Drawing.Size(850, 195);
-            this.tabPageVerbose.TabIndex = 2;
-            this.tabPageVerbose.Text = "Verbose";
-            this.tabPageVerbose.UseVisualStyleBackColor = true;
-            // 
-            // textBoxVerbose
-            // 
-            this.textBoxVerbose.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxVerbose.Location = new System.Drawing.Point(0, 0);
-            this.textBoxVerbose.Multiline = true;
-            this.textBoxVerbose.Name = "textBoxVerbose";
-            this.textBoxVerbose.ReadOnly = true;
-            this.textBoxVerbose.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxVerbose.Size = new System.Drawing.Size(850, 195);
-            this.textBoxVerbose.TabIndex = 1;
-            // 
-            // tabPageOptions
-            // 
-            this.tabPageOptions.Controls.Add(this.buttonClearLogs);
-            this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
-            this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Size = new System.Drawing.Size(850, 195);
-            this.tabPageOptions.TabIndex = 3;
-            this.tabPageOptions.Text = "Options";
-            this.tabPageOptions.UseVisualStyleBackColor = true;
-            // 
-            // buttonClearLogs
-            // 
-            this.buttonClearLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClearLogs.Location = new System.Drawing.Point(393, 77);
-            this.buttonClearLogs.Name = "buttonClearLogs";
-            this.buttonClearLogs.Size = new System.Drawing.Size(119, 21);
-            this.buttonClearLogs.TabIndex = 14;
-            this.buttonClearLogs.Text = "Clear log windows";
-            this.buttonClearLogs.UseVisualStyleBackColor = true;
-            this.buttonClearLogs.Click += new System.EventHandler(this.buttonClearLogs_Click);
-            // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPagePowerShell);
@@ -309,7 +211,7 @@
             this.tabPagePowerShell.Controls.Add(this.radioButtonUseLocalPowerShell);
             this.tabPagePowerShell.Location = new System.Drawing.Point(4, 22);
             this.tabPagePowerShell.Name = "tabPagePowerShell";
-            this.tabPagePowerShell.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPagePowerShell.Padding = new System.Windows.Forms.Padding(3);
             this.tabPagePowerShell.Size = new System.Drawing.Size(851, 61);
             this.tabPagePowerShell.TabIndex = 1;
             this.tabPagePowerShell.Text = "PowerShell";
@@ -443,7 +345,7 @@
             this.tabPageAuthv1.Controls.Add(this.labelUsername);
             this.tabPageAuthv1.Location = new System.Drawing.Point(4, 22);
             this.tabPageAuthv1.Name = "tabPageAuthv1";
-            this.tabPageAuthv1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageAuthv1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAuthv1.Size = new System.Drawing.Size(851, 61);
             this.tabPageAuthv1.TabIndex = 0;
             this.tabPageAuthv1.Text = "Authentication";
@@ -554,13 +456,132 @@
             this.timerTaskMonitor.Interval = 1000;
             this.timerTaskMonitor.Tick += new System.EventHandler(this.timerTaskMonitor_Tick);
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.textBoxStatus);
+            this.panel1.Controls.Add(this.tabControl1);
+            this.panel1.Location = new System.Drawing.Point(12, 315);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(859, 221);
+            this.panel1.TabIndex = 14;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPageOutput);
+            this.tabControl1.Controls.Add(this.tabPageErrors);
+            this.tabControl1.Controls.Add(this.tabPageVerbose);
+            this.tabControl1.Controls.Add(this.tabPageOptions);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(859, 221);
+            this.tabControl1.TabIndex = 13;
+            // 
+            // tabPageOutput
+            // 
+            this.tabPageOutput.Controls.Add(this.textBoxOutput);
+            this.tabPageOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOutput.Name = "tabPageOutput";
+            this.tabPageOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageOutput.Size = new System.Drawing.Size(851, 195);
+            this.tabPageOutput.TabIndex = 0;
+            this.tabPageOutput.Text = "Output";
+            this.tabPageOutput.UseVisualStyleBackColor = true;
+            // 
+            // textBoxOutput
+            // 
+            this.textBoxOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxOutput.Location = new System.Drawing.Point(3, 3);
+            this.textBoxOutput.Multiline = true;
+            this.textBoxOutput.Name = "textBoxOutput";
+            this.textBoxOutput.ReadOnly = true;
+            this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxOutput.Size = new System.Drawing.Size(845, 189);
+            this.textBoxOutput.TabIndex = 1;
+            // 
+            // tabPageErrors
+            // 
+            this.tabPageErrors.Controls.Add(this.textBoxErrors);
+            this.tabPageErrors.Location = new System.Drawing.Point(4, 22);
+            this.tabPageErrors.Name = "tabPageErrors";
+            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageErrors.Size = new System.Drawing.Size(424, 195);
+            this.tabPageErrors.TabIndex = 1;
+            this.tabPageErrors.Text = "Errors";
+            this.tabPageErrors.UseVisualStyleBackColor = true;
+            // 
+            // textBoxErrors
+            // 
+            this.textBoxErrors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxErrors.Location = new System.Drawing.Point(3, 3);
+            this.textBoxErrors.Multiline = true;
+            this.textBoxErrors.Name = "textBoxErrors";
+            this.textBoxErrors.ReadOnly = true;
+            this.textBoxErrors.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxErrors.Size = new System.Drawing.Size(418, 189);
+            this.textBoxErrors.TabIndex = 1;
+            // 
+            // tabPageVerbose
+            // 
+            this.tabPageVerbose.Controls.Add(this.textBoxVerbose);
+            this.tabPageVerbose.Location = new System.Drawing.Point(4, 22);
+            this.tabPageVerbose.Name = "tabPageVerbose";
+            this.tabPageVerbose.Size = new System.Drawing.Size(424, 195);
+            this.tabPageVerbose.TabIndex = 2;
+            this.tabPageVerbose.Text = "Verbose";
+            this.tabPageVerbose.UseVisualStyleBackColor = true;
+            // 
+            // textBoxVerbose
+            // 
+            this.textBoxVerbose.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxVerbose.Location = new System.Drawing.Point(0, 0);
+            this.textBoxVerbose.Multiline = true;
+            this.textBoxVerbose.Name = "textBoxVerbose";
+            this.textBoxVerbose.ReadOnly = true;
+            this.textBoxVerbose.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxVerbose.Size = new System.Drawing.Size(424, 195);
+            this.textBoxVerbose.TabIndex = 1;
+            // 
+            // tabPageOptions
+            // 
+            this.tabPageOptions.Controls.Add(this.buttonClearLogs);
+            this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOptions.Name = "tabPageOptions";
+            this.tabPageOptions.Size = new System.Drawing.Size(851, 195);
+            this.tabPageOptions.TabIndex = 3;
+            this.tabPageOptions.Text = "Options";
+            this.tabPageOptions.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearLogs
+            // 
+            this.buttonClearLogs.Location = new System.Drawing.Point(354, 89);
+            this.buttonClearLogs.Name = "buttonClearLogs";
+            this.buttonClearLogs.Size = new System.Drawing.Size(119, 21);
+            this.buttonClearLogs.TabIndex = 14;
+            this.buttonClearLogs.Text = "Clear log windows";
+            this.buttonClearLogs.UseVisualStyleBackColor = true;
+            // 
+            // textBoxStatus
+            // 
+            this.textBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxStatus.Location = new System.Drawing.Point(198, 1);
+            this.textBoxStatus.Name = "textBoxStatus";
+            this.textBoxStatus.ReadOnly = true;
+            this.textBoxStatus.Size = new System.Drawing.Size(659, 20);
+            this.textBoxStatus.TabIndex = 14;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 549);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl2);
-            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox2);
             this.MinimumSize = new System.Drawing.Size(893, 550);
@@ -570,6 +591,13 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
+            this.tabPagePowerShell.ResumeLayout(false);
+            this.tabPagePowerShell.PerformLayout();
+            this.tabPageAuthv1.ResumeLayout(false);
+            this.tabPageAuthv1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPageOutput.ResumeLayout(false);
             this.tabPageOutput.PerformLayout();
@@ -578,11 +606,6 @@
             this.tabPageVerbose.ResumeLayout(false);
             this.tabPageVerbose.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
-            this.tabPagePowerShell.ResumeLayout(false);
-            this.tabPagePowerShell.PerformLayout();
-            this.tabPageAuthv1.ResumeLayout(false);
-            this.tabPageAuthv1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -597,15 +620,6 @@
         private System.Windows.Forms.Button buttonAddCredential;
         private System.Windows.Forms.ListBox listBoxVariables;
         private System.Windows.Forms.Button buttonRunPowerShell;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPageOutput;
-        private System.Windows.Forms.TextBox textBoxOutput;
-        private System.Windows.Forms.TabPage tabPageErrors;
-        private System.Windows.Forms.TextBox textBoxErrors;
-        private System.Windows.Forms.TabPage tabPageVerbose;
-        private System.Windows.Forms.TextBox textBoxVerbose;
-        private System.Windows.Forms.TabPage tabPageOptions;
-        private System.Windows.Forms.Button buttonClearLogs;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPageAuthv1;
         private System.Windows.Forms.RadioButton radioButtonSpecificCredentials;
@@ -630,6 +644,17 @@
         private System.Windows.Forms.CheckBox checkBoxEXOv2;
         private System.Windows.Forms.Timer timerTaskMonitor;
         private System.Windows.Forms.CheckBox checkBoxUseCertificateThumprint;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox textBoxStatus;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPageOutput;
+        private System.Windows.Forms.TextBox textBoxOutput;
+        private System.Windows.Forms.TabPage tabPageErrors;
+        private System.Windows.Forms.TextBox textBoxErrors;
+        private System.Windows.Forms.TabPage tabPageVerbose;
+        private System.Windows.Forms.TextBox textBoxVerbose;
+        private System.Windows.Forms.TabPage tabPageOptions;
+        private System.Windows.Forms.Button buttonClearLogs;
     }
 }
 

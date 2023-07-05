@@ -52,6 +52,7 @@ namespace ExchangePSAutomationTest
             _variablesManager.UpdateListBox(listBoxVariables);
             checkBoxOffice365.Checked = true;
             checkBoxEXOv2_CheckedChanged(this, null);
+            SetStatus("");
         }
 
         /// <summary>
@@ -178,6 +179,26 @@ namespace ExchangePSAutomationTest
         }
 
         /// <summary>
+        /// Sets the status text.  If status is blank, the status textbox is hidden.
+        /// </summary>
+        /// <param name="status">Status to display (blank to hide).</param>
+        private void SetStatus(string status)
+        {
+            Action action = new Action(() =>
+            {
+                textBoxStatus.Text = status;
+                if (String.IsNullOrEmpty(status))
+                    textBoxStatus.Visible = false;
+                else if (textBoxStatus.Visible == false)
+                    textBoxStatus.Visible = true;
+            });
+            if (textBoxStatus.InvokeRequired)
+                textBoxStatus.Invoke(action, null);
+            else
+                action();
+        }
+
+        /// <summary>
         /// Invoke the PowerShell command/script and write the streams to the UI
         /// </summary>
         /// <param name="powershell">PowerShell object to invoke</param>
@@ -215,17 +236,18 @@ namespace ExchangePSAutomationTest
                 {
                     if (result != null)
                     {
+                        SetStatus("Parsing cmdlet output");
+                        StringBuilder propInfo = new StringBuilder();
                         foreach (PSObject obj in result)
                         {
-                            StringBuilder propInfo = new StringBuilder();
                             foreach (PSPropertyInfo psPropInfo in obj.Properties)
                             {
-                                propInfo.AppendLine(String.Format("{0}: {1}", psPropInfo.Name, psPropInfo.Value));
+                                propInfo.AppendLine($"{psPropInfo.Name}: {psPropInfo.Value}");
                             }
-
-                            LogOutput($"{propInfo}{Environment.NewLine}");
-                            _outputLog.Log(propInfo.ToString());
+                            propInfo.AppendLine();
                         }
+                        LogOutput(propInfo.ToString());
+                        _outputLog.Log(propInfo.ToString());
                     }
                 }
             }
@@ -242,8 +264,16 @@ namespace ExchangePSAutomationTest
         {
             LogOutput($"{Message}{Environment.NewLine}", textBoxErrors);
             _errorLog.Log(Message);
-            if (tabControl1.SelectedTab != tabPageErrors)
-                tabControl1.SelectedTab = tabPageErrors;
+
+            Action action = new Action(() =>
+            {
+                if (tabControl1.SelectedTab != tabPageErrors)
+                    tabControl1.SelectedTab = tabPageErrors;
+            });
+            if (tabControl1.InvokeRequired)
+                tabControl1.Invoke(action, null);
+            else
+                action();
         }
 
         /// <summary>
@@ -477,6 +507,7 @@ namespace ExchangePSAutomationTest
                 if (_exchangeRunspace.RunspaceStateInfo.State == RunspaceState.Opened)
                     return true;
             }
+            SetStatus("Connecting to Exchange runspace");
             if (radioButtonUseLocalPowerShell.Checked)
             {
                 return ConnectWithLocalPowerShell();
@@ -523,12 +554,14 @@ namespace ExchangePSAutomationTest
         {
             try
             {
+                SetStatus("Creating PowerShell session");
                 PowerShell powershell = PowerShell.Create();
                 powershell.Runspace = _exchangeRunspace;
 
                 // Apply any credentials we have to the runspace
                 _variablesManager.ApplyCredentialsToPowerShell(powershell);
 
+                SetStatus("Processing PowerShell");
                 if (checkBoxProcessAsCommand.Checked)
                 {
                     // If we connect directly to the Exchange remote runspace, we can't run a script.  Each command (which
@@ -553,6 +586,7 @@ namespace ExchangePSAutomationTest
             {
                 LogError(ex.Message);
             }
+            SetStatus("");
         }
 
         /// <summary>
