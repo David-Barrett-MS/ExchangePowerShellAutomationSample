@@ -85,7 +85,7 @@ namespace ExchangePSAutomationTest
             textBoxPassword.Enabled = radioButtonSpecificCredentials.Checked;
             textBoxAuthCertificate.Enabled = radioButtonCertificateCredential.Checked;
             buttonChooseCertificate.Enabled = radioButtonCertificateCredential.Checked;
-            if (checkBoxEXOv2.Checked)
+            if (checkBoxOffice365.Checked)
             {
                 //radioButtonUseLocalPowerShell.Checked = true;
                 if (radioButtonDefaultCredentials.Checked)
@@ -126,8 +126,8 @@ namespace ExchangePSAutomationTest
                 labelPassword.Text = "Password:";
                 labelPassword.Visible = true;
                 textBoxPassword.Visible = true;
-                labelPassword.Enabled = radioButtonSpecificCredentials.Checked;
-                labelUsername.Enabled = radioButtonSpecificCredentials.Checked;
+                textBoxPassword.Enabled = radioButtonSpecificCredentials.Checked;
+                textBoxUsername.Enabled = radioButtonSpecificCredentials.Checked;
                 textBoxPassword.UseSystemPasswordChar = true;
             }
 
@@ -392,7 +392,7 @@ namespace ExchangePSAutomationTest
         {
             if (radioButtonSpecificCredentials.Checked)
             {
-                if (checkBoxEXOv2.Checked)
+                if (checkBoxOffice365.Checked)
                 {
                     if (!String.IsNullOrEmpty(textBoxUsername.Text))
                         command.AddParameter("UserPrincipalName", textBoxUsername.Text);
@@ -484,6 +484,12 @@ namespace ExchangePSAutomationTest
 
                     // Run the New-PSSession command in the local PowerShell runspace
                     Collection<PSObject> result = InvokeAndReport(powershell);
+                    if (result == null)
+                    {
+                        _exchangeRunspace.Close();
+                        throw new Exception("Failed to connect to remote runspace.");
+                    }
+
                     if (result.Count != 1)
                     {
                         _exchangeRunspace.Close();
@@ -804,9 +810,21 @@ namespace ExchangePSAutomationTest
                     checkBoxProcessAsCommand.Enabled = false;
                 }
             }
+            else
+            {
+                if (textBoxExchangePSUrl.Text == "https://outlook.office365.com/powershell-liveid/")
+                {
+                    textBoxExchangePSUrl.Text = "http://<exchange>/powershell/";
+                    textBoxExchangePSUrl.Focus();
+                    textBoxExchangePSUrl.SelectionStart = 7;
+                    textBoxExchangePSUrl.SelectionLength = 10;
+                }
+                comboBoxAuthMethod.SelectedIndex = 4; // Kerberos
+            }
             comboBoxAuthMethod.Enabled = !checkBoxOffice365.Checked;
             textBoxExchangePSUrl.ReadOnly = checkBoxOffice365.Checked;
             checkBoxEXOv2.Enabled = checkBoxOffice365.Checked;
+            UpdateAuthState();
         }
 
         private void checkBoxEXOv2_CheckedChanged(object sender, EventArgs e)
