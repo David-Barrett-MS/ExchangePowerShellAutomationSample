@@ -386,7 +386,7 @@ namespace ExchangePSAutomationTest
         }
 
         /// <summary>
-        /// Add the authentication parameters session connection command
+        /// Add the authentication parameters to the connection command
         /// </summary>
         private void AddAuthParameterForSession(PSCommand command)
         {
@@ -446,7 +446,6 @@ namespace ExchangePSAutomationTest
             PSCommand command = new PSCommand();
             command.AddCommand("Connect-ExchangeOnline");
             AddAuthParameterForSession(command);
-
 
             return command;
         }
@@ -725,6 +724,9 @@ namespace ExchangePSAutomationTest
             buttonRunPowerShell.Enabled = false;
             Cursor cursor = this.Cursor;
             this.Cursor = Cursors.WaitCursor;
+
+            if (checkBoxNewSession.Checked && _exchangeRunspace != null)
+                CloseRunspace();
 
             if (ConnectExchangeRunspace())
             {

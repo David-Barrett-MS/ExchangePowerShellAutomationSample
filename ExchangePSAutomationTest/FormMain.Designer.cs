@@ -71,6 +71,7 @@
             this.textBoxVerbose = new System.Windows.Forms.TextBox();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.buttonClearLogs = new System.Windows.Forms.Button();
+            this.checkBoxNewSession = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -100,6 +101,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.checkBoxNewSession);
             this.groupBox2.Controls.Add(this.buttonRunPowerShell);
             this.groupBox2.Controls.Add(this.checkBoxProcessAsCommand);
             this.groupBox2.Controls.Add(this.textBoxPowerShell);
@@ -569,6 +571,18 @@
             this.buttonClearLogs.UseVisualStyleBackColor = true;
             this.buttonClearLogs.Click += new System.EventHandler(this.buttonClearLogs_Click);
             // 
+            // checkBoxNewSession
+            // 
+            this.checkBoxNewSession.AutoSize = true;
+            this.checkBoxNewSession.Checked = true;
+            this.checkBoxNewSession.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxNewSession.Location = new System.Drawing.Point(366, 179);
+            this.checkBoxNewSession.Name = "checkBoxNewSession";
+            this.checkBoxNewSession.Size = new System.Drawing.Size(88, 17);
+            this.checkBoxNewSession.TabIndex = 8;
+            this.checkBoxNewSession.Text = "New Session";
+            this.checkBoxNewSession.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -648,6 +662,7 @@
         private System.Windows.Forms.TextBox textBoxVerbose;
         private System.Windows.Forms.TabPage tabPageOptions;
         private System.Windows.Forms.Button buttonClearLogs;
+        private System.Windows.Forms.CheckBox checkBoxNewSession;
     }
 }
 
